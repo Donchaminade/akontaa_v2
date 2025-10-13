@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: const Color(0xFFBB86FC),
-  scaffoldBackgroundColor: Colors.transparent,
+  scaffoldBackgroundColor: const Color(0xFF121212),
   colorScheme: ColorScheme.dark(
     primary: const Color(0xFFBB86FC),
     secondary: AppColors.green,
-    surface: AppColors.background,
+    surface: const Color(0xFF1E1E1E),
     error: AppColors.red,
     onPrimary: Colors.black,
     onSecondary: Colors.white,
@@ -26,7 +26,7 @@ final darkTheme = ThemeData(
     iconTheme: IconThemeData(color: Colors.white),
   ),
   cardTheme: CardThemeData(
-    color: AppColors.background,
+    color: const Color(0xFF1E1E1E),
     elevation: 5,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(15),
@@ -47,6 +47,6 @@ final darkTheme = ThemeData(
       borderSide: BorderSide.none,
     ),
     filled: true,
-    fillColor: AppColors.background.withOpacity(0.5),
+    fillColor: const Color(0xFF2A2A2A),
   ),
 );

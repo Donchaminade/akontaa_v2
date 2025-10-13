@@ -39,7 +39,6 @@ class _DashboardPageState extends State<DashboardPage> {
     final recentTransactions = debtProvider.recentTransactions;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -47,7 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 200,
+                height: 160,
                 child: PageView(
                   controller: _pageController,
                   children: [

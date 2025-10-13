@@ -155,10 +155,13 @@ class DebtDetailPage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: debt.isPaid ? null : () => _showAddRepaymentDialog(context, debt),
-        backgroundColor: debt.isPaid ? Colors.grey : Theme.of(context).colorScheme.secondary,
-        child: const Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 80.0),
+        child: FloatingActionButton(
+          onPressed: debt.isPaid ? null : () => _showAddRepaymentDialog(context, debt),
+          backgroundColor: debt.isPaid ? Colors.grey : Theme.of(context).colorScheme.secondary,
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

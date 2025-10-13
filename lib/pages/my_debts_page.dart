@@ -12,7 +12,6 @@ class MyDebtsPage extends StatelessWidget {
     final myDebts = debtProvider.myDebts;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       body: myDebts.isEmpty
           ? const Center(
               child: Text(

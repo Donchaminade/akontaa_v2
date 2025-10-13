@@ -58,9 +58,12 @@ class PaymentsByPersonPage extends StatelessWidget {
                 );
               },
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _printDebts(context),
-        child: const Icon(Icons.print),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 80.0),
+        child: FloatingActionButton(
+          onPressed: () => _printDebts(context),
+          child: const Icon(Icons.print),
+        ),
       ),
     );
   }

@@ -23,7 +23,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
 
     _colorAnimation1 = ColorTween(
       begin: Colors.deepPurple[900],
-      end: Colors.blue[900],
+      end: const Color.fromARGB(255, 49, 47, 47),
     ).animate(_controller);
 
     _colorAnimation2 = ColorTween(
