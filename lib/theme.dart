@@ -44,7 +44,15 @@ final darkTheme = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide.none,
+      borderSide: const BorderSide(color: Colors.white, width: 1.0),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Colors.white, width: 1.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: AppColors.green, width: 2.0),
     ),
     filled: true,
     fillColor: const Color(0xFF2A2A2A),

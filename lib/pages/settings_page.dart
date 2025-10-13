@@ -1,4 +1,4 @@
-
+import 'dart:ui';
 import 'package:akontaa/providers/debt_provider.dart';
 import 'package:akontaa/services/notification_service.dart';
 import 'package:flutter/material.dart';
@@ -45,42 +45,45 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          title: const Text('Réinitialiser les données'),
-          content: const Text('Êtes-vous sûr de vouloir supprimer les données ? Cette action est irréversible.'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Annuler'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Mes dettes seulement'),
-              onPressed: () {
-                final debtProvider = Provider.of<DebtProvider>(context, listen: false);
-                debtProvider.clearMyDebts();
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('On me doit seulement'),
-              onPressed: () {
-                final debtProvider = Provider.of<DebtProvider>(context, listen: false);
-                debtProvider.clearOwedToMeDebts();
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Tout supprimer'),
-              onPressed: () {
-                final debtProvider = Provider.of<DebtProvider>(context, listen: false);
-                debtProvider.clearAllDebts();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
+            title: const Text('Réinitialiser les données'),
+            content: const Text('Êtes-vous sûr de vouloir supprimer les données ? Cette action est irréversible.'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Annuler'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Mes dettes seulement'),
+                onPressed: () {
+                  final debtProvider = Provider.of<DebtProvider>(context, listen: false);
+                  debtProvider.clearMyDebts();
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('On me doit seulement'),
+                onPressed: () {
+                  final debtProvider = Provider.of<DebtProvider>(context, listen: false);
+                  debtProvider.clearOwedToMeDebts();
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Tout supprimer'),
+                onPressed: () {
+                  final debtProvider = Provider.of<DebtProvider>(context, listen: false);
+                  debtProvider.clearAllDebts();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
         );
       },
     );

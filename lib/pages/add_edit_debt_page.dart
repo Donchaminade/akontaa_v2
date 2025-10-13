@@ -107,86 +107,131 @@ class _AddEditDebtPageState extends State<AddEditDebtPage> {
         title: Text(widget.debt == null ? 'Ajouter une dette' : 'Modifier la dette'),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: _saveForm,
-          ),
-        ],
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
-            child: ListView(
+            child: Column(
               children: [
-                TextFormField(
-                  initialValue: _personName,
-                  decoration: const InputDecoration(labelText: 'Nom de la personne'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer un nom.';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => _personName = value!,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  initialValue: _totalAmount != 0 ? _totalAmount.toString() : '',
-                  decoration: const InputDecoration(labelText: 'Montant total'),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null ||
-                        double.tryParse(value) == null ||
-                        double.parse(value) <= 0) {
-                      return 'Veuillez entrer un montant valide.';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => _totalAmount = double.parse(value!),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  initialValue: _description,
-                  decoration: const InputDecoration(labelText: 'Description'),
-                  maxLines: 3,
-                  onSaved: (value) => _description = value ?? '',
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _dueDateController,
-                  decoration: InputDecoration(
-                    labelText: 'Date d\'échéance',
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: () => _selectDueDate(context),
+                Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  elevation: 8,
+                  shadowColor: Colors.black.withOpacity(0.5),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      initialValue: _personName,
+                      decoration: InputDecoration(
+                        labelText: 'Nom de la personne',
+                        prefixIcon: Icon(Icons.person, color: Theme.of(context).colorScheme.secondary),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez entrer un nom.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => _personName = value!,
                     ),
                   ),
-                  readOnly: true,
                 ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).inputDecorationTheme.fillColor,
-                    borderRadius: BorderRadius.circular(12),
+                Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  elevation: 8,
+                  shadowColor: Colors.black.withOpacity(0.5),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      initialValue: _totalAmount != 0 ? _totalAmount.toString() : '',
+                      decoration: InputDecoration(
+                        labelText: 'Montant total',
+                        prefixIcon: Icon(Icons.attach_money, color: Theme.of(context).colorScheme.secondary),
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null ||
+                            double.tryParse(value) == null ||
+                            double.parse(value) <= 0) {
+                          return 'Veuillez entrer un montant valide.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => _totalAmount = double.parse(value!),
+                    ),
                   ),
-                  child: SwitchListTile(
-                    title: const Text('On me doit cet argent'),
-                    value: _isOwedToMe,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _isOwedToMe = value;
-                      });
-                    },
-                    activeColor: Theme.of(context).colorScheme.secondary,
+                ),
+                Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  elevation: 8,
+                  shadowColor: Colors.black.withOpacity(0.5),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      initialValue: _description,
+                      decoration: InputDecoration(
+                        labelText: 'Description',
+                        prefixIcon: Icon(Icons.description, color: Theme.of(context).colorScheme.secondary),
+                      ),
+                      maxLines: 3,
+                      onSaved: (value) => _description = value ?? '',
+                    ),
+                  ),
+                ),
+                Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  elevation: 8,
+                  shadowColor: Colors.black.withOpacity(0.5),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      controller: _dueDateController,
+                      decoration: InputDecoration(
+                        labelText: 'Date d\'échéance',
+                        prefixIcon: Icon(Icons.calendar_today, color: Theme.of(context).colorScheme.secondary),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.edit_calendar),
+                          onPressed: () => _selectDueDate(context),
+                        ),
+                      ),
+                      readOnly: true,
+                    ),
+                  ),
+                ),
+                Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  elevation: 8,
+                  shadowColor: Colors.black.withOpacity(0.5),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                    child: SwitchListTile(
+                      title: const Text('On me doit cet argent'),
+                      value: _isOwedToMe,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _isOwedToMe = value;
+                        });
+                      },
+                      activeColor: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 80.0),
+        child: FloatingActionButton(
+          onPressed: _saveForm,
+          child: const Icon(Icons.save),
         ),
       ),
     );

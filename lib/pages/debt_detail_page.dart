@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:akontaa/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,64 +21,67 @@ class DebtDetailPage extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        title: const Text('Ajouter un remboursement'),
-        content: Form(
-          key: formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: amountController,
-                decoration: const InputDecoration(labelText: 'Montant'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null ||
-                      double.tryParse(value) == null ||
-                      double.parse(value) <= 0) {
-                    return 'Montant invalide.';
-                  }
-                  if (double.parse(value) > debt.remainingAmount) {
-                    return 'Le montant ne peut pas dépasser le solde restant.';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: notesController,
-                decoration: const InputDecoration(labelText: 'Notes (optionnel)'),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            child: const Text('Annuler'),
-            onPressed: () => Navigator.of(ctx).pop(),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.green,
-              foregroundColor: Colors.white,
+      builder: (ctx) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
+          title: const Text('Ajouter un remboursement'),
+          content: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: amountController,
+                  decoration: const InputDecoration(labelText: 'Montant'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null ||
+                        double.tryParse(value) == null ||
+                        double.parse(value) <= 0) {
+                      return 'Montant invalide.';
+                    }
+                    if (double.parse(value) > debt.remainingAmount) {
+                      return 'Le montant ne peut pas dépasser le solde restant.';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: notesController,
+                  decoration: const InputDecoration(labelText: 'Notes (optionnel)'),
+                ),
+              ],
             ),
-            child: const Text('Ajouter'),
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                final newRepayment = Repayment(
-                  id: const Uuid().v4(),
-                  amount: double.parse(amountController.text),
-                  date: DateTime.now(),
-                  notes: notesController.text,
-                );
-                Provider.of<DebtProvider>(context, listen: false)
-                    .addRepayment(debt.id, newRepayment);
-                Navigator.of(ctx).pop();
-              }
-            },
           ),
-        ],
+          actions: [
+            TextButton(
+              child: const Text('Annuler'),
+              onPressed: () => Navigator.of(ctx).pop(),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.green,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Ajouter'),
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  final newRepayment = Repayment(
+                    id: const Uuid().v4(),
+                    amount: double.parse(amountController.text),
+                    date: DateTime.now(),
+                    notes: notesController.text,
+                  );
+                  Provider.of<DebtProvider>(context, listen: false)
+                      .addRepayment(debt.id, newRepayment);
+                  Navigator.of(ctx).pop();
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -108,26 +112,30 @@ class DebtDetailPage extends StatelessWidget {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (ctx) => AlertDialog(
-                  title: const Text('Confirmer la suppression'),
-                  content: const Text(
-                      'Êtes-vous sûr de vouloir supprimer cette dette ?'),
-                  actions: [
-                    TextButton(
-                      child: const Text('Annuler'),
-                      onPressed: () => Navigator.of(ctx).pop(),
-                    ),
-                    TextButton(
-                      child: Text('Supprimer', style: TextStyle(color: Theme.of(context).colorScheme.error)),
-                      onPressed: () {
-                        Provider.of<DebtProvider>(context, listen: false)
-                            .deleteDebt(debtId);
-                        Navigator.of(ctx).pop(); // Ferme la dialog
-                        Navigator.of(context)
-                            .pop(); // Retourne à l'écran précédent
-                      },
-                    ),
-                  ],
+                builder: (ctx) => BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: AlertDialog(
+                    backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
+                    title: const Text('Confirmer la suppression'),
+                    content: const Text(
+                        'Êtes-vous sûr de vouloir supprimer cette dette ?'),
+                    actions: [
+                      TextButton(
+                        child: const Text('Annuler'),
+                        onPressed: () => Navigator.of(ctx).pop(),
+                      ),
+                      TextButton(
+                        child: Text('Supprimer', style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                        onPressed: () {
+                          Provider.of<DebtProvider>(context, listen: false)
+                              .deleteDebt(debtId);
+                          Navigator.of(ctx).pop(); // Ferme la dialog
+                          Navigator.of(context)
+                              .pop(); // Retourne à l'écran précédent
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
