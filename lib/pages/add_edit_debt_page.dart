@@ -11,10 +11,10 @@ class AddEditDebtPage extends StatefulWidget {
   const AddEditDebtPage({super.key, this.debt});
 
   @override
-  _AddEditDebtPageState createState() => _AddEditDebtPageState();
+  AddEditDebtPageState createState() => AddEditDebtPageState();
 }
 
-class _AddEditDebtPageState extends State<AddEditDebtPage> {
+class AddEditDebtPageState extends State<AddEditDebtPage> {
   final _formKey = GlobalKey<FormState>();
   late String _personName;
   late double _totalAmount;

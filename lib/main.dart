@@ -1,4 +1,4 @@
-import 'package:akontaa/pages/home_page.dart';
+
 import 'package:akontaa/services/notification_service.dart';
 import 'package:akontaa/splash_screen.dart';
 import 'package:akontaa/theme.dart';

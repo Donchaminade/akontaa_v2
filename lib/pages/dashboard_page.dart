@@ -6,9 +6,10 @@ import 'package:akontaa/pages/add_edit_debt_page.dart';
 import 'package:akontaa/pages/add_repayment_page.dart';
 import 'package:akontaa/pages/transaction_history_page.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:provider/provider.dart';
 import '../providers/debt_provider.dart';
+import '../widgets/debt_flow_chart.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -82,6 +83,16 @@ class _DashboardPageState extends State<DashboardPage> {
                     }),
                   ],
                 ),
+              ),
+              const SizedBox(height: 24),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text('Flux des dettes et remboursements', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ),
+              const SizedBox(height: 16),
+              const SizedBox(
+                height: 200, // Adjust height as needed
+                child: DebtFlowChart(),
               ),
               const SizedBox(height: 24),
               const Padding(

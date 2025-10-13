@@ -4,10 +4,10 @@ class AnimatedBackground extends StatefulWidget {
   const AnimatedBackground({super.key});
 
   @override
-  _AnimatedBackgroundState createState() => _AnimatedBackgroundState();
+  AnimatedBackgroundState createState() => AnimatedBackgroundState();
 }
 
-class _AnimatedBackgroundState extends State<AnimatedBackground>
+class AnimatedBackgroundState extends State<AnimatedBackground>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Color?> _colorAnimation1;
