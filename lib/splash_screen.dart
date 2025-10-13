@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final Function(ThemeMode) changeTheme;
+
+  const SplashScreen({super.key, required this.changeTheme});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -37,12 +39,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       if (hasSeenOnboarding) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage(showOnboarding: false)),
+          MaterialPageRoute(builder: (context) => HomePage(showOnboarding: false, changeTheme: widget.changeTheme)),
         );
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage(showOnboarding: true)),
+          MaterialPageRoute(builder: (context) => HomePage(showOnboarding: true, changeTheme: widget.changeTheme)),
         );
       }
     }

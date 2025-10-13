@@ -167,8 +167,8 @@ class _DashboardPageState extends State<DashboardPage> {
         children: [
           CircleAvatar(
             radius: 30,
-            backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
-            child: Icon(icon, size: 30, color: Theme.of(context).colorScheme.secondary),
+            backgroundColor: AppColors.green.withOpacity(0.1),
+            child: Icon(icon, size: 30, color: AppColors.green),
           ),
           const SizedBox(height: 8),
           Text(label, style: const TextStyle(fontSize: 12)),

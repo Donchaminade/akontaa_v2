@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:akontaa/app_colors.dart';
 import 'package:akontaa/pages/dashboard_page.dart';
 import 'package:akontaa/pages/my_debts_page.dart';
 import 'package:akontaa/pages/owed_to_me_page.dart';
@@ -10,7 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   final bool showOnboarding;
-  const HomePage({super.key, this.showOnboarding = false});
+  final Function(ThemeMode) changeTheme;
+  const HomePage({super.key, this.showOnboarding = false, required this.changeTheme});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -289,7 +291,7 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (ctx) => const SettingsPage()),
+                MaterialPageRoute(builder: (ctx) => SettingsPage(changeTheme: widget.changeTheme)),
               );
             },
           ),
@@ -299,6 +301,7 @@ class _HomePageState extends State<HomePage> {
       extendBody: true,
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(16),
+        height: 70, // Increased height
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
           borderRadius: BorderRadius.circular(24),
@@ -311,7 +314,7 @@ class _HomePageState extends State<HomePage> {
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(_selectedIndex == 0 ? Icons.dashboard_rounded : Icons.dashboard_outlined, key: _dashboardNavItemKey),
-                  label: 'Tableau de bord',
+                  label: 'Dash',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(_selectedIndex == 1 ? Icons.arrow_upward_rounded : Icons.arrow_upward_outlined, key: _myDebtsNavItemKey),
@@ -329,14 +332,14 @@ class _HomePageState extends State<HomePage> {
               currentIndex: _selectedIndex,
               onTap: _onItemTapped,
               backgroundColor: const Color.fromARGB(232, 59, 59, 59),
-              selectedItemColor: Theme.of(context).colorScheme.secondary,
+              selectedItemColor: AppColors.green,
               unselectedItemColor: Colors.white70,
               type: BottomNavigationBarType.fixed,
-              showSelectedLabels: false,
+              showSelectedLabels: true,
               showUnselectedLabels: false,
-              selectedFontSize: 0,
+              selectedFontSize: 12.0,
               unselectedFontSize: 0,
-              iconSize: 20,
+              iconSize: 28, // Increased icon size
             ),
           ),
         ),

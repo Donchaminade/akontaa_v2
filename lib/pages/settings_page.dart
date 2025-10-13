@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  final Function(ThemeMode) changeTheme;
+  const SettingsPage({super.key, required this.changeTheme});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -121,16 +122,71 @@ class _SettingsPageState extends State<SettingsPage> {
         elevation: 0,
       ),
       body: ListView(
+        padding: const EdgeInsets.all(16.0),
         children: [
-          SwitchListTile(
-            title: const Text('Activer les notifications'),
-            value: _notificationsEnabled,
-            onChanged: _toggleNotifications,
-            activeColor: Theme.of(context).colorScheme.secondary,
+          Card(
+            elevation: 4,
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: SwitchListTile(
+              title: const Text('Activer les notifications'),
+              secondary: const Icon(Icons.notifications),
+              value: _notificationsEnabled,
+              onChanged: _toggleNotifications,
+              activeColor: Theme.of(context).colorScheme.secondary,
+            ),
           ),
-          ListTile(
-            title: const Text("Réinitialiser l'application"),
-            onTap: _showResetDialog,
+          Card(
+            elevation: 4,
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: ListTile(
+              leading: const Icon(Icons.brightness_6),
+              title: const Text('Thème'),
+              trailing: DropdownButton<ThemeMode>(
+                value: Theme.of(context).brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light,
+                onChanged: (ThemeMode? newMode) {
+                  if (newMode != null) {
+                    widget.changeTheme(newMode);
+                  }
+                },
+                items: const <DropdownMenuItem<ThemeMode>>[
+                  DropdownMenuItem<ThemeMode>(
+                    value: ThemeMode.light,
+                    child: Text('Clair'),
+                  ),
+                  DropdownMenuItem<ThemeMode>(
+                    value: ThemeMode.dark,
+                    child: Text('Sombre'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            elevation: 4,
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: ListTile(
+              leading: const Icon(Icons.language),
+              title: const Text('Langue'),
+              trailing: const Text('Français (par défaut)'), // Placeholder for language selection
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('La sélection de la langue nécessite une configuration d\'internationalisation plus approfondie.')),
+                );
+              },
+            ),
+          ),
+          Card(
+            elevation: 4,
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: ListTile(
+              leading: const Icon(Icons.restore),
+              title: const Text("Réinitialiser l'application"),
+              onTap: _showResetDialog,
+            ),
           ),
         ],
       ),

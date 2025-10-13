@@ -24,26 +24,29 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
 
     // Convert map to a sorted list of _ChartDataPoint
     List<_ChartDataPoint> chartData = [];
+    List<_ChartDataPoint> weeklyRepaymentData = [];
 
     if (allTransactions.isEmpty) {
-      return const Center(child: Text('Aucune donnée de dette ou de remboursement pour le graphique.'));
+      return const Center(
+        child: Text('Aucune donnée de dette ou de remboursement pour le graphique.'),
+      );
     }
 
-    // Determine the date range for the chart
-    final firstTransactionDate = allTransactions.last.date; // allTransactions is sorted newest first
-    final lastTransactionDate = allTransactions.first.date;
+    // Déterminer la période totale
+    final firstTransactionDate = allTransactions.last.date; // oldest
+    final lastTransactionDate = allTransactions.first.date; // newest
 
+    // Données cumulées mensuelles
     DateTime currentMonth = DateTime(firstTransactionDate.year, firstTransactionDate.month, 1);
     double cumulativeOwedToMe = 0;
     double cumulativeMyDebts = 0;
 
-    while (currentMonth.isBefore(lastTransactionDate) || currentMonth.isAtSameMomentAs(lastTransactionDate)) {
-      final monthYearKey = '${currentMonth.year}-${currentMonth.month.toString().padLeft(2, '0')}';
-
+    while (currentMonth.isBefore(lastTransactionDate) ||
+        currentMonth.isAtSameMomentAs(lastTransactionDate)) {
       double monthOwedToMeChange = 0;
       double monthMyDebtsChange = 0;
 
-      // Calculate changes for the current month from actual transactions
+      // Calcul des montants mensuels
       for (var transaction in allTransactions.where((t) =>
           t.date.year == currentMonth.year && t.date.month == currentMonth.month)) {
         if (transaction.type == TransactionType.debt) {
@@ -55,7 +58,8 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
           }
         } else if (transaction.type == TransactionType.repayment) {
           final repayment = transaction.item as Repayment;
-          final debt = debtProvider.debts.firstWhere((d) => d.repayments.any((r) => r.id == repayment.id));
+          final debt = debtProvider.debts.firstWhere(
+              (d) => d.repayments.any((r) => r.id == repayment.id));
           if (debt.isOwedToMe) {
             monthOwedToMeChange -= repayment.amount;
           } else {
@@ -69,101 +73,98 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
 
       chartData.add(_ChartDataPoint(currentMonth, cumulativeOwedToMe, cumulativeMyDebts));
 
-      currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1); // Move to next month
+      currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
     }
 
-    if (chartData.isEmpty) {
-      return const Center(child: Text('Aucune donnée de dette ou de remboursement pour le graphique.'));
+    // Données hebdomadaires pour remboursements
+    Map<String, double> weeklyRepaymentTotals = {};
+    for (var transaction in allTransactions) {
+      if (transaction.type == TransactionType.repayment) {
+        final repayment = transaction.item as Repayment;
+        final weekStartDate =
+            transaction.date.subtract(Duration(days: transaction.date.weekday - 1));
+        final weekKey =
+            '${weekStartDate.year}-${weekStartDate.month.toString().padLeft(2, '0')}-${weekStartDate.day.toString().padLeft(2, '0')}';
+        weeklyRepaymentTotals.update(
+          weekKey,
+          (value) => value + repayment.amount,
+          ifAbsent: () => repayment.amount,
+        );
+      }
     }
 
-    // return SfCartesianChart(
-    //   primaryXAxis: DateTimeAxis(
-    //     dateFormat: DateFormat.MMM(),
-    //     intervalType: DateTimeIntervalType.months,
-    //     majorGridLines: const MajorGridLines(width: 0),
-    //   ),
-    //   primaryYAxis: NumericAxis(
-    //     numberFormat: NumberFormat.compact(),
-    //     majorGridLines: const MajorGridLines(width: 0),
-    //   ),
-    //   series: <CartesianSeries<dynamic, DateTime>>[
-    //     SplineSeries<_ChartDataPoint, DateTime>(
-    //       dataSource: chartData,
-    //       xValueMapper: (_ChartDataPoint data, _) => data.month,
-    //       yValueMapper: (_ChartDataPoint data, _) => data.owedToMe,
-    //       name: 'On me doit',
-    //       color: AppColors.green,
-    //       markerSettings: const MarkerSettings(isVisible: true),
-    //       splineType: SplineType.cardinal,
-    //     ),
-      
-    //     SplineSeries<_ChartDataPoint, DateTime>(
-    //       dataSource: chartData,
-    //       xValueMapper: (_ChartDataPoint data, _) => data.month,
-    //       yValueMapper: (_ChartDataPoint data, _) => data.myDebts,
-    //       name: 'Mes dettes',
-    //       color: AppColors.red,
-    //       markerSettings: const MarkerSettings(isVisible: true),
-    //       splineType: SplineType.cardinal,
-    //     ),
-    //   ],
-    //   tooltipBehavior: TooltipBehavior(enable: true),
-    //   legend: const Legend(isVisible: true),
-    // );
+    final sortedWeekKeys = weeklyRepaymentTotals.keys.toList()..sort();
+    for (final weekKey in sortedWeekKeys) {
+      final parts = weekKey.split('-');
+      final weekStartDate =
+          DateTime(int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
+      weeklyRepaymentData.add(
+          _ChartDataPoint(weekStartDate, weeklyRepaymentTotals[weekKey]!, 0));
+    }
+
+    if (chartData.isEmpty && weeklyRepaymentData.isEmpty) {
+      return const Center(
+        child: Text('Aucune donnée de dette ou de remboursement pour le graphique.'),
+      );
+    }
 
     return SfCartesianChart(
-  backgroundColor: Colors.transparent,
-  plotAreaBackgroundColor: Colors.transparent,
-  primaryXAxis: DateTimeAxis(
-    dateFormat: DateFormat.MMM(),
-    intervalType: DateTimeIntervalType.months,
-    majorGridLines: const MajorGridLines(width: 0),
-    axisLine: const AxisLine(width: 0.5, color: Colors.grey),
-  ),
-  primaryYAxis: NumericAxis(
-    numberFormat: NumberFormat.compact(),
-    majorGridLines: const MajorGridLines(width: 0.3, color: Colors.grey),
-    axisLine: const AxisLine(width: 0.5, color: Colors.grey),
-  ),
-  series: <CartesianSeries>[
-    // 🌊 Ligne 1 : On me doit
-    SplineAreaSeries<_ChartDataPoint, DateTime>(
-      dataSource: chartData,
-      xValueMapper: (data, _) => data.month,
-      yValueMapper: (data, _) => data.owedToMe,
-      name: 'On me doit',
-      gradient: LinearGradient(
-        colors: [AppColors.green.withOpacity(0.4), Colors.transparent],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
+      backgroundColor: Colors.transparent,
+      plotAreaBackgroundColor: Colors.transparent,
+      primaryXAxis: DateTimeAxis(
+        dateFormat: DateFormat.MMM(),
+        intervalType: DateTimeIntervalType.months,
+        majorGridLines: const MajorGridLines(width: 0),
+        axisLine: const AxisLine(width: 0.5, color: Colors.grey),
       ),
-      borderColor: AppColors.green,
-      borderWidth: 3,
-      splineType: SplineType.cardinal,
-      animationDuration: 1500,
-    ),
-
-    // 🔴 Ligne 2 : Mes dettes
-    SplineAreaSeries<_ChartDataPoint, DateTime>(
-      dataSource: chartData,
-      xValueMapper: (data, _) => data.month,
-      yValueMapper: (data, _) => data.myDebts,
-      name: 'Mes dettes',
-      gradient: LinearGradient(
-        colors: [AppColors.red.withOpacity(0.4), Colors.transparent],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
+      primaryYAxis: NumericAxis(
+        numberFormat: NumberFormat.compact(),
+        majorGridLines: const MajorGridLines(width: 0.3, color: Colors.grey),
+        axisLine: const AxisLine(width: 0.5, color: Colors.grey),
       ),
-      borderColor: AppColors.red,
-      borderWidth: 3,
-      splineType: SplineType.cardinal,
-      animationDuration: 1500,
-    ),
-  ],
-  tooltipBehavior: TooltipBehavior(enable: true),
-  legend: const Legend(isVisible: true),
-);
+      series: <CartesianSeries<dynamic, DateTime>>[
+        // 🌊 Courbe 1 : On me doit
+        SplineSeries<_ChartDataPoint, DateTime>(
+          dataSource: chartData,
+          xValueMapper: (data, _) => data.month,
+          yValueMapper: (data, _) => data.owedToMe,
+          name: 'On me doit',
+          color: AppColors.green,
+          width: 4,
+          splineType: SplineType.natural, // rend la ligne plus fluide
+          markerSettings: const MarkerSettings(isVisible: true),
+          animationDuration: 1500,
+        ),
 
+        // ❤️ Courbe 2 : Mes dettes
+        SplineSeries<_ChartDataPoint, DateTime>(
+          dataSource: chartData,
+          xValueMapper: (data, _) => data.month,
+          yValueMapper: (data, _) => data.myDebts,
+          name: 'Mes dettes',
+          color: AppColors.red,
+          width: 4,
+          splineType: SplineType.natural,
+          markerSettings: const MarkerSettings(isVisible: true),
+          animationDuration: 1500,
+        ),
+
+        // 🔵 Courbe 3 : Remboursements hebdo
+        SplineSeries<_ChartDataPoint, DateTime>(
+          dataSource: weeklyRepaymentData,
+          xValueMapper: (data, _) => data.month,
+          yValueMapper: (data, _) => data.owedToMe, // utilisé pour le total hebdo
+          name: 'Remboursements (hebdo)',
+          color: Colors.blueAccent,
+          width: 3,
+          splineType: SplineType.natural,
+          markerSettings: const MarkerSettings(isVisible: true),
+          animationDuration: 1500,
+        ),
+      ],
+      tooltipBehavior: TooltipBehavior(enable: true),
+      legend: const Legend(isVisible: true),
+    );
   }
 }
 
