@@ -186,11 +186,11 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                 segments: const <ButtonSegment<_DebtFilter>>[
                   ButtonSegment<_DebtFilter>(
                     value: _DebtFilter.myDebts,
-                    label: Text('Dettes'),
+                    label: Text('Dettes', style: TextStyle(fontSize: 16)),
                   ),
                   ButtonSegment<_DebtFilter>(
                     value: _DebtFilter.owedToMe,
-                    label: Text('On me doit'),
+                    label: Text('On me doit', style: TextStyle(fontSize: 16)),
                   ),
                 ],
                 selected: <_DebtFilter>{_selectedFilter},
@@ -200,12 +200,13 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                   });
                 },
                 style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all(const Size(150, 70)), // Make buttons larger
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {
                       if (states.contains(MaterialState.selected)) {
                         return _selectedFilter == _DebtFilter.myDebts
-                            ? Colors.red.withOpacity(0.7)
-                            : Colors.green.withOpacity(0.7);
+                            ? AppColors.red
+                            : AppColors.green;
                       }
                       return Colors.grey.withOpacity(0.3);
                     },

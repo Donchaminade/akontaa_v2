@@ -1,4 +1,5 @@
 import 'package:akontaa/pages/home_page.dart';
+import 'package:akontaa/pages/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,18 +34,18 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     final prefs = await SharedPreferences.getInstance();
     final bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
 
-    await Future.delayed(const Duration(seconds: 1)); // Additional delay for effect
+    await Future.delayed(const Duration(seconds: 1)); // Original delay for effect
 
     if (mounted) {
       if (hasSeenOnboarding) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage(showOnboarding: false, changeTheme: widget.changeTheme)),
+          MaterialPageRoute(builder: (context) => LoadingScreen(changeTheme: widget.changeTheme)),
         );
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage(showOnboarding: true, changeTheme: widget.changeTheme)),
+          MaterialPageRoute(builder: (context) => LoadingScreen(changeTheme: widget.changeTheme)),
         );
       }
     }

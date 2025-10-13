@@ -26,86 +26,81 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
     List<_ChartDataPoint> chartData = [];
     List<_ChartDataPoint> weeklyRepaymentData = [];
 
-    if (allTransactions.isEmpty) {
-      return const Center(
-        child: Text('Aucune donnée de dette ou de remboursement pour le graphique.'),
-      );
+    // Déterminer la période totale
+    DateTime? firstTransactionDate;
+    DateTime? lastTransactionDate;
+
+    if (allTransactions.isNotEmpty) {
+      firstTransactionDate = allTransactions.last.date; // oldest
+      lastTransactionDate = allTransactions.first.date; // newest
     }
 
-    // Déterminer la période totale
-    final firstTransactionDate = allTransactions.last.date; // oldest
-    final lastTransactionDate = allTransactions.first.date; // newest
+    if (firstTransactionDate != null && lastTransactionDate != null) {
+      // Données cumulées mensuelles
+      DateTime currentMonth = DateTime(firstTransactionDate.year, firstTransactionDate.month, 1);
+      double cumulativeOwedToMe = 0;
+      double cumulativeMyDebts = 0;
 
-    // Données cumulées mensuelles
-    DateTime currentMonth = DateTime(firstTransactionDate.year, firstTransactionDate.month, 1);
-    double cumulativeOwedToMe = 0;
-    double cumulativeMyDebts = 0;
+      while (currentMonth.isBefore(lastTransactionDate) ||
+          currentMonth.isAtSameMomentAs(lastTransactionDate)) {
+        double monthOwedToMeChange = 0;
+        double monthMyDebtsChange = 0;
 
-    while (currentMonth.isBefore(lastTransactionDate) ||
-        currentMonth.isAtSameMomentAs(lastTransactionDate)) {
-      double monthOwedToMeChange = 0;
-      double monthMyDebtsChange = 0;
-
-      // Calcul des montants mensuels
-      for (var transaction in allTransactions.where((t) =>
-          t.date.year == currentMonth.year && t.date.month == currentMonth.month)) {
-        if (transaction.type == TransactionType.debt) {
-          final debt = transaction.item as Debt;
-          if (debt.isOwedToMe) {
-            monthOwedToMeChange += debt.totalAmount;
-          } else {
-            monthMyDebtsChange += debt.totalAmount;
+        // Calcul des montants mensuels
+        for (var transaction in allTransactions.where((t) =>
+            t.date.year == currentMonth.year && t.date.month == currentMonth.month)) {
+          if (transaction.type == TransactionType.debt) {
+            final debt = transaction.item as Debt;
+            if (debt.isOwedToMe) {
+              monthOwedToMeChange += debt.totalAmount;
+            } else {
+              monthMyDebtsChange += debt.totalAmount;
+            }
+          } else if (transaction.type == TransactionType.repayment) {
+            final repayment = transaction.item as Repayment;
+            final debt = debtProvider.debts.firstWhere(
+                (d) => d.repayments.any((r) => r.id == repayment.id));
+            if (debt.isOwedToMe) {
+              monthOwedToMeChange -= repayment.amount;
+            } else {
+              monthMyDebtsChange -= repayment.amount;
+            }
           }
-        } else if (transaction.type == TransactionType.repayment) {
+        }
+
+        cumulativeOwedToMe += monthOwedToMeChange;
+        cumulativeMyDebts += monthMyDebtsChange;
+
+        chartData.add(_ChartDataPoint(currentMonth, cumulativeOwedToMe, cumulativeMyDebts));
+
+        currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
+      }
+
+      // Données hebdomadaires pour remboursements
+      Map<String, double> weeklyRepaymentTotals = {};
+      for (var transaction in allTransactions) {
+        if (transaction.type == TransactionType.repayment) {
           final repayment = transaction.item as Repayment;
-          final debt = debtProvider.debts.firstWhere(
-              (d) => d.repayments.any((r) => r.id == repayment.id));
-          if (debt.isOwedToMe) {
-            monthOwedToMeChange -= repayment.amount;
-          } else {
-            monthMyDebtsChange -= repayment.amount;
-          }
+          final weekStartDate =
+              transaction.date.subtract(Duration(days: transaction.date.weekday - 1));
+          final weekKey = 
+              '${weekStartDate.year}-${weekStartDate.month.toString().padLeft(2, '0')}-${weekStartDate.day.toString().padLeft(2, '0')}';
+          weeklyRepaymentTotals.update(
+            weekKey,
+            (value) => value + repayment.amount,
+            ifAbsent: () => repayment.amount,
+          );
         }
       }
 
-      cumulativeOwedToMe += monthOwedToMeChange;
-      cumulativeMyDebts += monthMyDebtsChange;
-
-      chartData.add(_ChartDataPoint(currentMonth, cumulativeOwedToMe, cumulativeMyDebts));
-
-      currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
-    }
-
-    // Données hebdomadaires pour remboursements
-    Map<String, double> weeklyRepaymentTotals = {};
-    for (var transaction in allTransactions) {
-      if (transaction.type == TransactionType.repayment) {
-        final repayment = transaction.item as Repayment;
-        final weekStartDate =
-            transaction.date.subtract(Duration(days: transaction.date.weekday - 1));
-        final weekKey =
-            '${weekStartDate.year}-${weekStartDate.month.toString().padLeft(2, '0')}-${weekStartDate.day.toString().padLeft(2, '0')}';
-        weeklyRepaymentTotals.update(
-          weekKey,
-          (value) => value + repayment.amount,
-          ifAbsent: () => repayment.amount,
-        );
+      final sortedWeekKeys = weeklyRepaymentTotals.keys.toList()..sort();
+      for (final weekKey in sortedWeekKeys) {
+        final parts = weekKey.split('-');
+        final weekStartDate = 
+            DateTime(int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
+        weeklyRepaymentData.add(
+            _ChartDataPoint(weekStartDate, weeklyRepaymentTotals[weekKey]!, 0));
       }
-    }
-
-    final sortedWeekKeys = weeklyRepaymentTotals.keys.toList()..sort();
-    for (final weekKey in sortedWeekKeys) {
-      final parts = weekKey.split('-');
-      final weekStartDate =
-          DateTime(int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
-      weeklyRepaymentData.add(
-          _ChartDataPoint(weekStartDate, weeklyRepaymentTotals[weekKey]!, 0));
-    }
-
-    if (chartData.isEmpty && weeklyRepaymentData.isEmpty) {
-      return const Center(
-        child: Center(child: Text('Aucune donnée de dette ou de remboursement pour le graphique.')),
-      );
     }
 
     return SfCartesianChart(
