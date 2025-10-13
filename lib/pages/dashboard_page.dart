@@ -4,7 +4,7 @@ import 'package:akontaa/models/repayment.dart';
 import 'package:akontaa/models/transaction.dart';
 import 'package:akontaa/pages/add_edit_debt_page.dart';
 import 'package:akontaa/pages/add_repayment_page.dart';
-import 'package:akontaa/pages/payments_by_person_page.dart';
+import 'package:akontaa/pages/transaction_history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -77,7 +77,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     }),
                     _buildQuickAction(context, Icons.history, 'Historique', () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) => const PaymentsByPersonPage()),
+                        MaterialPageRoute(builder: (ctx) => const TransactionHistoryPage()),
                       );
                     }),
                   ],

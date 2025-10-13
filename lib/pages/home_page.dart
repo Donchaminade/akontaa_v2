@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:akontaa/pages/dashboard_page.dart';
 import 'package:akontaa/pages/my_debts_page.dart';
 import 'package:akontaa/pages/owed_to_me_page.dart';
-import 'package:akontaa/pages/payments_by_person_page.dart';
+import 'package:akontaa/pages/transaction_history_page.dart';
 import 'package:akontaa/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     const DashboardPage(),
     const MyDebtsPage(),
     const OwedToMePage(),
-    const PaymentsByPersonPage(),
+    const TransactionHistoryPage(),
   ];
 
   final List<String> _pageTitles = [

@@ -12,7 +12,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  late bool _notificationsEnabled;
+  bool _notificationsEnabled = false; // Initialize directly
   final NotificationService _notificationService = NotificationService();
 
   @override
@@ -22,6 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _loadNotificationSettings() async {
+    // Get the combined status (app setting AND platform permission)
     final areEnabled = await _notificationService.areNotificationsEnabled();
     setState(() {
       _notificationsEnabled = areEnabled;
@@ -29,10 +30,31 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _toggleNotifications(bool value) async {
+    if (value) {
+      // User wants to enable notifications, request platform permissions
+      final bool granted = await _notificationService.requestPermissions();
+      if (!granted) {
+        // Permissions denied, show a message and don't enable the switch
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text(
+                    'Autorisation de notification refusée. Veuillez l\'activer dans les paramètres de votre téléphone.')),
+          );
+        }
+        setState(() {
+          _notificationsEnabled = false; // Keep it disabled
+        });
+        return;
+      }
+    }
+
+    // If permissions are granted (or not enabling), proceed with app setting
     setState(() {
       _notificationsEnabled = value;
     });
     await _notificationService.setNotificationsEnabled(value);
+
     if (value) {
       final debtProvider = Provider.of<DebtProvider>(context, listen: false);
       await _notificationService.rescheduleAllNotifications(debtProvider.debts);

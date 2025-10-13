@@ -1,4 +1,3 @@
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -27,9 +26,9 @@ class NotificationService {
 
     const DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
+      requestAlertPermission: false, // We will request explicitly
+      requestBadgePermission: false,
+      requestSoundPermission: false,
     );
 
     const InitializationSettings initializationSettings = InitializationSettings(
@@ -42,9 +41,44 @@ class NotificationService {
     tz.initializeTimeZones();
   }
 
+  Future<bool> _checkPlatformNotificationPermission() async {
+    // For Android, check if notifications are enabled for the app
+    final bool? androidGranted = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.areNotificationsEnabled();
+
+    // For iOS, request permissions and check the result
+    // This will also prompt the user if permissions are not yet determined.
+    final bool? iOSGranted = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+
+    return (androidGranted ?? false) || (iOSGranted ?? false);
+  }
+
+  Future<bool> requestPermissions() async {
+    final bool? androidGranted = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
+    final bool? iOSGranted = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+    return (androidGranted ?? false) || (iOSGranted ?? false);
+  }
+
   Future<bool> areNotificationsEnabled() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_notificationsEnabledKey) ?? true;
+    final bool appSettingEnabled = prefs.getBool(_notificationsEnabledKey) ?? true;
+    final bool platformPermissionGranted = await _checkPlatformNotificationPermission();
+    return appSettingEnabled && platformPermissionGranted;
   }
 
   Future<void> setNotificationsEnabled(bool enabled) async {
@@ -114,4 +148,3 @@ class NotificationService {
     }
   }
 }
-
