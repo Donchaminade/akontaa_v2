@@ -1,5 +1,6 @@
 import 'package:akontaa/pages/home_page.dart';
 import 'package:akontaa/services/notification_service.dart';
+import 'package:akontaa/splash_screen.dart';
 import 'package:akontaa/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Akontaa',
         theme: darkTheme,
-        home: const HomePage(),
+        home: const SplashScreen(),
       ),
     );
   }

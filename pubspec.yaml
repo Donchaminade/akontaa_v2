@@ -10,19 +10,39 @@ dependencies:
     sdk: flutter
   provider: ^6.0.5
   uuid: ^4.4.0 
-  shared_preferences: ^2.1.1
+  shared_preferences: ^2.2.2 # Updated version
   intl: ^0.18.0
   # flutter_local_notifications: ^17.1.2
   flutter_local_notifications: ^19.4.2
   pdf: ^3.10.4
   printing: ^5.12.0
+  flutter_native_splash: ^2.3.1 # Added dependency
+  tutorial_coach_mark: ^1.2.8 # Added for onboarding guide
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.1
+
+flutter_native_splash:
+  color: white
+  image: assets/logoak.png # Using the provided logo
+  android: true
+  ios: true
+  web: false
+
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logoak.png"
+  adaptive_icon_background: "#0F0F0FFF"  # (optionnel, couleur de fond Android)
+  adaptive_icon_foreground: "assets/images/logoak.png"
 
 flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/logoak.png # Explicitly added logo asset
