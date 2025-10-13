@@ -24,4 +24,5 @@ flutter run
 - Les modèles se sérialisent en JSON pour la persistance.
 - Exemple de données initiales incluses pour tester l'interface.
 
-Bonne continuation — si vous voulez, je peux ajouter la génération PDF, l'upload d'images de preuve, ou migration vers Hive.
+
+
