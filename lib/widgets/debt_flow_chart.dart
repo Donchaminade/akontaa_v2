@@ -104,7 +104,7 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
 
     if (chartData.isEmpty && weeklyRepaymentData.isEmpty) {
       return const Center(
-        child: Text('Aucune donnée de dette ou de remboursement pour le graphique.'),
+        child: Center(child: Text('Aucune donnée de dette ou de remboursement pour le graphique.')),
       );
     }
 
