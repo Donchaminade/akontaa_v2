@@ -10,10 +10,10 @@ import 'package:akontaa/pages/add_repayment_page.dart';
 import 'package:akontaa/pages/transaction_history_page.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:provider/provider.dart';
 import '../providers/debt_provider.dart';
 import '../widgets/debt_flow_chart.dart';
+import 'package:akontaa/widgets/typing_animation.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -22,17 +22,13 @@ class DashboardPage extends StatefulWidget {
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> with TickerProviderStateMixin {
+class _DashboardPageState extends State<DashboardPage> with SingleTickerProviderStateMixin {
   final PageController _pageController = PageController(viewportFraction: 0.85);
   int _currentPage = 0;
-
-  late AnimationController _vibrationController;
-  late Animation<double> _vibrationAnimation;
 
   late AnimationController _mirrorController;
   late Animation<double> _mirrorAnimation;
 
-  Timer? _vibrationTimer;
   Timer? _mirrorTimer;
 
   @override
@@ -46,22 +42,6 @@ class _DashboardPageState extends State<DashboardPage> with TickerProviderStateM
       }
     });
 
-    _vibrationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 100),
-    )..addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _vibrationController.reverse();
-      }
-    });
-
-    _vibrationAnimation = Tween<double>(begin: -0.01, end: 0.01).animate(
-      CurvedAnimation(
-        parent: _vibrationController,
-        curve: Curves.elasticIn,
-      ),
-    );
-
     _mirrorController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -74,12 +54,6 @@ class _DashboardPageState extends State<DashboardPage> with TickerProviderStateM
       ),
     );
 
-    _vibrationTimer = Timer.periodic(const Duration(seconds: 3), (_) {
-      if (mounted) {
-        _vibrationController.forward(from: 0.0);
-      }
-    });
-
     _mirrorTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted) {
         _mirrorController.forward(from: 0.0);
@@ -90,9 +64,7 @@ class _DashboardPageState extends State<DashboardPage> with TickerProviderStateM
   @override
   void dispose() {
     _pageController.dispose();
-    _vibrationController.dispose();
     _mirrorController.dispose();
-    _vibrationTimer?.cancel();
     _mirrorTimer?.cancel();
     super.dispose();
   }
@@ -200,9 +172,9 @@ class _DashboardPageState extends State<DashboardPage> with TickerProviderStateM
 
   Widget _buildSummaryCard(BuildContext context, String title, double amount, Color color) {
     IconData icon = Icons.info_outline; // Default icon
-    if (title == 'On me doit') {
+    if (title == AppLocalizations.of(context)!.onMeDoit) {
       icon = Icons.arrow_upward;
-    } else if (title == 'Mes dettes') {
+    } else if (title == AppLocalizations.of(context)!.mesDettes) {
       icon = Icons.arrow_downward;
     }
 
@@ -239,9 +211,9 @@ class _DashboardPageState extends State<DashboardPage> with TickerProviderStateM
                   children: [
                     Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                     const SizedBox(height: 8),
-                    RotationTransition(
-                      turns: _vibrationAnimation,
-                      child: Text('${amount.toStringAsFixed(2)} Fcfa', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white)),
+                    TypingAnimation(
+                      text: '${amount.toStringAsFixed(2)} Fcfa',
+                      style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ],
                 ),
