@@ -133,6 +133,13 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildSummaryCard(BuildContext context, String title, double amount, Color color) {
+    IconData icon = Icons.info_outline; // Default icon
+    if (title == 'On me doit') {
+      icon = Icons.arrow_upward;
+    } else if (title == 'Mes dettes') {
+      icon = Icons.arrow_downward;
+    }
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -146,13 +153,26 @@ class _DashboardPageState extends State<DashboardPage> {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            Text(title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
-            const SizedBox(height: 8),
-            Text('${amount.toStringAsFixed(2)} Fcfa', style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white)),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Icon(
+                icon,
+                color: Colors.white.withOpacity(0.5),
+                size: 40,
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                const SizedBox(height: 8),
+                Text('${amount.toStringAsFixed(2)} Fcfa', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white)),
+              ],
+            ),
           ],
         ),
       ),

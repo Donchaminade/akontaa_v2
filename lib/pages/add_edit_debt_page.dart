@@ -127,6 +127,11 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                       decoration: InputDecoration(
                         labelText: 'Nom de la personne',
                         prefixIcon: Icon(Icons.person, color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                        ),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -150,6 +155,11 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                       decoration: InputDecoration(
                         labelText: 'Montant total',
                         prefixIcon: Icon(Icons.attach_money, color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                        ),
                       ),
                       keyboardType: TextInputType.number,
                       validator: (value) {
@@ -176,6 +186,11 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                       decoration: InputDecoration(
                         labelText: 'Description',
                         prefixIcon: Icon(Icons.description, color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                        ),
                       ),
                       maxLines: 3,
                       onSaved: (value) => _description = value ?? '',
@@ -194,6 +209,11 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                       decoration: InputDecoration(
                         labelText: 'Date d\'échéance',
                         prefixIcon: Icon(Icons.calendar_today, color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                        ),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.edit_calendar),
                           onPressed: () => _selectDueDate(context),

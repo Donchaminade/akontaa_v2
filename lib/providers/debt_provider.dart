@@ -67,9 +67,7 @@ class DebtProvider with ChangeNotifier {
 
   Future<void> loadDebts() async {
     _debts = await _storageService.loadDebts();
-    if (_debts.isEmpty) {
-      _addSampleData();
-    }
+    // _addSampleData(); // Removed to prevent data reset
     await _notificationService.rescheduleAllNotifications(_debts);
     notifyListeners();
   }

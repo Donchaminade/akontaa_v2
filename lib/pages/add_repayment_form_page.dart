@@ -77,6 +77,11 @@ class _AddRepaymentFormPageState extends State<AddRepaymentFormPage> {
                       decoration: InputDecoration(
                         labelText: 'Montant du remboursement',
                         prefixIcon: Icon(Icons.attach_money, color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                        ),
                       ),
                       keyboardType: TextInputType.number,
                       validator: (value) {
@@ -105,6 +110,11 @@ class _AddRepaymentFormPageState extends State<AddRepaymentFormPage> {
                       decoration: InputDecoration(
                         labelText: 'Notes (optionnel)',
                         prefixIcon: Icon(Icons.note, color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                        ),
                       ),
                       maxLines: 3,
                     ),
