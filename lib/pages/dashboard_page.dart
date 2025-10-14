@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:akontaa/app_colors.dart';
+import 'package:akontaa/l10n/app_localizations.dart';
 import 'package:akontaa/models/debt.dart';
 import 'package:akontaa/models/repayment.dart';
 import 'package:akontaa/models/transaction.dart';
@@ -6,6 +9,7 @@ import 'package:akontaa/pages/add_edit_debt_page.dart';
 import 'package:akontaa/pages/add_repayment_page.dart';
 import 'package:akontaa/pages/transaction_history_page.dart';
 import 'package:flutter/material.dart';
+
 
 import 'package:provider/provider.dart';
 import '../providers/debt_provider.dart';
@@ -18,18 +22,79 @@ class DashboardPage extends StatefulWidget {
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardPageState extends State<DashboardPage> with TickerProviderStateMixin {
   final PageController _pageController = PageController(viewportFraction: 0.85);
   int _currentPage = 0;
+
+  late AnimationController _vibrationController;
+  late Animation<double> _vibrationAnimation;
+
+  late AnimationController _mirrorController;
+  late Animation<double> _mirrorAnimation;
+
+  Timer? _vibrationTimer;
+  Timer? _mirrorTimer;
 
   @override
   void initState() {
     super.initState();
     _pageController.addListener(() {
-      setState(() {
-        _currentPage = _pageController.page!.round();
-      });
+      if (mounted) {
+        setState(() {
+          _currentPage = _pageController.page!.round();
+        });
+      }
     });
+
+    _vibrationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+    )..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _vibrationController.reverse();
+      }
+    });
+
+    _vibrationAnimation = Tween<double>(begin: -0.01, end: 0.01).animate(
+      CurvedAnimation(
+        parent: _vibrationController,
+        curve: Curves.elasticIn,
+      ),
+    );
+
+    _mirrorController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    _mirrorAnimation = Tween<double>(begin: -1.0, end: 2.0).animate(
+      CurvedAnimation(
+        parent: _mirrorController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _vibrationTimer = Timer.periodic(const Duration(seconds: 3), (_) {
+      if (mounted) {
+        _vibrationController.forward(from: 0.0);
+      }
+    });
+
+    _mirrorTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) {
+        _mirrorController.forward(from: 0.0);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _vibrationController.dispose();
+    _mirrorController.dispose();
+    _vibrationTimer?.cancel();
+    _mirrorTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -38,6 +103,7 @@ class _DashboardPageState extends State<DashboardPage> {
     final totalOwedToMe = debtProvider.totalOwedToMe;
     final totalMyDebts = debtProvider.totalMyDebts;
     final recentTransactions = debtProvider.recentTransactions;
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -51,8 +117,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: PageView(
                   controller: _pageController,
                   children: [
-                    _buildSummaryCard(context, 'On me doit', totalOwedToMe, AppColors.green),
-                    _buildSummaryCard(context, 'Mes dettes', totalMyDebts, AppColors.red),
+                    _buildSummaryCard(context, localizations.onMeDoit, totalOwedToMe, AppColors.green),
+                    _buildSummaryCard(context, localizations.mesDettes, totalMyDebts, AppColors.red),
                   ],
                 ),
               ),
@@ -66,17 +132,17 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildQuickAction(context, Icons.add, 'Ajouter', () {
+                    _buildQuickAction(context, Icons.add, localizations.ajouter, () {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (ctx) => const AddEditDebtPage()),
                       );
                     }),
-                    _buildQuickAction(context, Icons.payment, 'Rembourser', () {
+                    _buildQuickAction(context, Icons.payment, localizations.rembourser, () {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (ctx) => const AddRepaymentPage()),
                       );
                     }),
-                    _buildQuickAction(context, Icons.history, 'Historique', () {
+                    _buildQuickAction(context, Icons.history, localizations.historique, () {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (ctx) => const TransactionHistoryPage()),
                       );
@@ -85,9 +151,9 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               const SizedBox(height: 24),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text('Flux des dettes et remboursements', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(localizations.fluxDesDettesEtRemboursements, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 16),
               const SizedBox(
@@ -95,13 +161,13 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: DebtFlowChart(),
               ),
               const SizedBox(height: 24),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text('Activité récente', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(localizations.activiteRecente, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 16),
               if (recentTransactions.isEmpty)
-                const Center(child: Text('Aucune activité récente.'))
+                Center(child: Text(localizations.aucuneActiviteRecente))
               else
                 ListView.builder(
                   shrinkWrap: true,
@@ -143,38 +209,67 @@ class _DashboardPageState extends State<DashboardPage> {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          gradient: LinearGradient(
-            colors: [color.withOpacity(0.7), color],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Icon(
-                icon,
-                color: Colors.white.withOpacity(0.5),
-                size: 40,
+      child: AnimatedBuilder(
+        animation: _mirrorController,
+        builder: (context, child) {
+          return Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              gradient: LinearGradient(
+                colors: [color.withOpacity(0.7), color],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
               children: [
-                Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
-                const SizedBox(height: 8),
-                Text('${amount.toStringAsFixed(2)} Fcfa', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white)),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Icon(
+                    icon,
+                    color: Colors.white.withOpacity(0.5),
+                    size: 40,
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                    const SizedBox(height: 8),
+                    RotationTransition(
+                      turns: _vibrationAnimation,
+                      child: Text('${amount.toStringAsFixed(2)} Fcfa', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white)),
+                    ),
+                  ],
+                ),
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white.withOpacity(0.0),
+                          Colors.white.withOpacity(0.3),
+                          Colors.white.withOpacity(0.0),
+                        ],
+                        stops: [
+                          _mirrorAnimation.value - 0.5,
+                          _mirrorAnimation.value,
+                          _mirrorAnimation.value + 0.5,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

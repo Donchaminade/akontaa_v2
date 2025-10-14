@@ -1,8 +1,11 @@
 import 'dart:ui';
+import 'package:akontaa/l10n/app_localizations.dart';
 import 'package:akontaa/providers/debt_provider.dart';
+import 'package:akontaa/providers/locale_provider.dart';
 import 'package:akontaa/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 
 class SettingsPage extends StatefulWidget {
   final Function(ThemeMode) changeTheme;
@@ -31,6 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _toggleNotifications(bool value) async {
+    final localizations = AppLocalizations.of(context)!;
     if (value) {
       // User wants to enable notifications, request platform permissions
       final bool granted = await _notificationService.requestPermissions();
@@ -38,9 +42,8 @@ class _SettingsPageState extends State<SettingsPage> {
         // Permissions denied, show a message and don't enable the switch
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text(
-                    'Autorisation de notification refusée. Veuillez l\'activer dans les paramètres de votre téléphone.')),
+            SnackBar(
+                content: Text(localizations.autorisationDeNotificationRefusee)),
           );
         }
         setState(() {
@@ -65,6 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _showResetDialog() {
+    final localizations = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -72,17 +76,17 @@ class _SettingsPageState extends State<SettingsPage> {
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: AlertDialog(
             backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-            title: const Text('Réinitialiser les données'),
-            content: const Text('Êtes-vous sûr de vouloir supprimer les données ? Cette action est irréversible.'),
+            title: Text(localizations.reinitialiserLesDonnees),
+            content: Text(localizations.etesVousSurDeVouloirSupprimerLesDonnees),
             actions: <Widget>[
               TextButton(
-                child: const Text('Annuler'),
+                child: Text(localizations.annuler),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: const Text('Mes dettes seulement'),
+                child: Text(localizations.mesDettesSeulement),
                 onPressed: () {
                   final debtProvider = Provider.of<DebtProvider>(context, listen: false);
                   debtProvider.clearMyDebts();
@@ -90,7 +94,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
               TextButton(
-                child: const Text('On me doit seulement'),
+                child: Text(localizations.onMeDoitSeulement),
                 onPressed: () {
                   final debtProvider = Provider.of<DebtProvider>(context, listen: false);
                   debtProvider.clearOwedToMeDebts();
@@ -98,7 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
               TextButton(
-                child: const Text('Tout supprimer'),
+                child: Text(localizations.toutSupprimer),
                 onPressed: () {
                   final debtProvider = Provider.of<DebtProvider>(context, listen: false);
                   debtProvider.clearAllDebts();
@@ -114,10 +118,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: const Text('Paramètres'),
+        title: Text(localizations.parametres),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -129,7 +134,7 @@ class _SettingsPageState extends State<SettingsPage> {
             margin: const EdgeInsets.symmetric(vertical: 8.0),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: SwitchListTile(
-              title: const Text('Activer les notifications'),
+              title: Text(localizations.activerLesNotifications),
               secondary: const Icon(Icons.notifications),
               value: _notificationsEnabled,
               onChanged: _toggleNotifications,
@@ -142,7 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: ListTile(
               leading: const Icon(Icons.brightness_6),
-              title: const Text('Thème'),
+              title: Text(localizations.theme),
               trailing: DropdownButton<ThemeMode>(
                 value: Theme.of(context).brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light,
                 onChanged: (ThemeMode? newMode) {
@@ -150,14 +155,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     widget.changeTheme(newMode);
                   }
                 },
-                items: const <DropdownMenuItem<ThemeMode>>[
+                items: <DropdownMenuItem<ThemeMode>>[
                   DropdownMenuItem<ThemeMode>(
                     value: ThemeMode.light,
-                    child: Text('Clair'),
+                    child: Text(localizations.clair),
                   ),
                   DropdownMenuItem<ThemeMode>(
                     value: ThemeMode.dark,
-                    child: Text('Sombre'),
+                    child: Text(localizations.sombre),
                   ),
                 ],
               ),
@@ -169,13 +174,25 @@ class _SettingsPageState extends State<SettingsPage> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: ListTile(
               leading: const Icon(Icons.language),
-              title: const Text('Langue'),
-              trailing: const Text('Français (par défaut)'), // Placeholder for language selection
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('La sélection de la langue nécessite une configuration d\'internationalisation plus approfondie.')),
-                );
-              },
+              title: Text(localizations.langue),
+              trailing: DropdownButton<String>(
+                value: Provider.of<LocaleProvider>(context).locale?.languageCode ?? 'fr',
+                onChanged: (String? newLocale) {
+                  if (newLocale != null) {
+                    Provider.of<LocaleProvider>(context, listen: false).setLocale(Locale(newLocale));
+                  }
+                },
+                items: const <DropdownMenuItem<String>>[
+                  DropdownMenuItem<String>(
+                    value: 'fr',
+                    child: Text('Français'),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'en',
+                    child: Text('English'),
+                  ),
+                ],
+              ),
             ),
           ),
           Card(
@@ -184,7 +201,7 @@ class _SettingsPageState extends State<SettingsPage> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: ListTile(
               leading: const Icon(Icons.restore),
-              title: const Text("Réinitialiser l'application"),
+              title: Text(localizations.reinitialiserLApplication),
               onTap: _showResetDialog,
             ),
           ),
