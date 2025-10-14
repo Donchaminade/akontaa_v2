@@ -5,6 +5,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter/foundation.dart';
 
 import '../models/debt.dart';
+import '../providers/debt_provider.dart'; // Import DebtProvider
 
 class NotificationService {
   static final NotificationService _notificationService = NotificationService._internal();
@@ -19,6 +20,7 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   static const String _notificationsEnabledKey = 'notifications_enabled';
+  static const int _dailyReminderNotificationId = 0; // A fixed ID for the daily reminder
 
   Future<void> init() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -140,11 +142,96 @@ class NotificationService {
   }
 
   Future<void> rescheduleAllNotifications(List<Debt> debts) async {
-    await cancelAllNotifications();
+    await cancelNotification(_dailyReminderNotificationId.toString()); // Cancel previous daily reminder
     if (await areNotificationsEnabled()) {
       for (final debt in debts) {
         await scheduleDueDateNotification(debt);
       }
+      // Schedule the daily reminder after individual debt notifications
+      await scheduleDailyDebtReminder(debts);
     }
   }
-}
+
+  Future<void> scheduleDailyDebtReminder(List<Debt> allDebts) async {
+    if (!await areNotificationsEnabled()) {
+      return;
+    }
+
+    final now = tz.TZDateTime.now(tz.local);
+    var scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 7, 0, 0);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+
+    final upcomingDebts = allDebts.where((debt) {
+      final difference = debt.dueDate.difference(now).inDays;
+      return !debt.isPaid && (difference >= 0 && difference <= 7 || difference < 0);
+    }).toList();
+
+    if (upcomingDebts.isEmpty) {
+      // If no upcoming or overdue debts, just schedule a generic reminder
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        _dailyReminderNotificationId,
+        'Rappel quotidien Akontaa',
+        'Aucune dette à venir ou en retard pour le moment.',
+        scheduledDate,
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'daily_reminder_channel',
+            'Rappels quotidiens',
+            channelDescription: 'Rappels quotidiens pour les dettes',
+            importance: Importance.low,
+            priority: Priority.low,
+          ),
+          iOS: DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+    } else {
+      // Construct a detailed message for upcoming/overdue debts
+      String title = 'Rappel de dettes Akontaa';
+      String body = 'Vous avez des dettes à gérer:\n';
+
+      for (var debt in upcomingDebts) {
+        final diffDays = debt.dueDate.difference(now).inDays;
+        if (diffDays < 0) {
+          body += '- ${debt.personName} : ${debt.remainingAmount.toStringAsFixed(0)} Fcfa (en retard de ${diffDays.abs()} jours)\n';
+        } else if (diffDays == 0) {
+          body += '- ${debt.personName} : ${debt.remainingAmount.toStringAsFixed(0)} Fcfa (aujourd\'hui)\n';
+        } else {
+          body += '- ${debt.personName} : ${debt.remainingAmount.toStringAsFixed(0)} Fcfa (dans $diffDays jours)\n';
+        }
+      }
+
+      
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        _dailyReminderNotificationId,
+        title,
+        body,
+        scheduledDate,
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'daily_reminder_channel',
+            'Rappels quotidiens',
+            channelDescription: 'Rappels quotidiens pour les dettes',
+            importance: Importance.high,
+            priority: Priority.high,
+            styleInformation: BigTextStyleInformation(''), // To show full body text
+          ),
+          iOS: DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+  };   }
+  }
+

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 final lightTheme = ThemeData(
   brightness: Brightness.light,
-  primaryColor: Colors.blue,
-  scaffoldBackgroundColor: Colors.white,
+  primaryColor: const Color(0xFF6200EE), // A slightly deeper purple for primary
+  scaffoldBackgroundColor: const Color(0xFFF5F5F5), // Soft off-white
   colorScheme: ColorScheme.light(
-    primary: Colors.blue,
-    secondary: AppColors.green, // Use green for secondary color in light mode
+    primary: const Color(0xFF6200EE),
+    secondary: AppColors.green, // Green for accent
     surface: Colors.white,
     error: AppColors.red,
     onPrimary: Colors.white,
@@ -15,19 +15,19 @@ final lightTheme = ThemeData(
     onSurface: Colors.black,
     onError: Colors.white,
   ),
-  appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.transparent,
-    elevation: 0,
+  appBarTheme: AppBarTheme(
+    backgroundColor: Colors.white, // Solid white app bar
+    elevation: 2, // Subtle elevation
     titleTextStyle: TextStyle(
-      color: Colors.black,
+      color: Colors.black87,
       fontSize: 20,
       fontWeight: FontWeight.bold,
     ),
-    iconTheme: IconThemeData(color: Colors.black),
+    iconTheme: IconThemeData(color: Colors.black87),
   ),
   cardTheme: CardThemeData(
     color: Colors.white,
-    elevation: 5,
+    elevation: 2, // Reduced elevation
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(15),
     ),
@@ -37,9 +37,9 @@ final lightTheme = ThemeData(
     foregroundColor: Colors.white,
   ),
   textTheme: const TextTheme(
-    headlineSmall: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-    titleLarge: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-    bodyMedium: TextStyle(color: Colors.black87),
+    headlineSmall: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+    titleLarge: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+    bodyMedium: TextStyle(color: Colors.black54),
   ),
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
