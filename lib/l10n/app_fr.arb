@@ -22,5 +22,96 @@
   "mesDettesSeulement": "Mes dettes seulement",
   "onMeDoitSeulement": "On me doit seulement",
   "toutSupprimer": "Tout supprimer",
-  "autorisationDeNotificationRefusee": "Autorisation de notification refusée. Veuillez l'activer dans les paramètres de votre téléphone."
+  "autorisationDeNotificationRefusee": "Autorisation de notification refusée. Veuillez l'activer dans les paramètres de votre téléphone.",
+  "ajouterUneDette": "Ajouter une dette",
+  "modifierLaDette": "Modifier la dette",
+  "nomDeLaPersonne": "Nom de la personne",
+  "veuillezEntrerUnNom": "Veuillez entrer un nom.",
+  "montantTotal": "Montant total",
+  "veuillezEntrerUnMontantValide": "Veuillez entrer un montant valide.",
+  "description": "Description",
+  "dateEcheance": "Date d'échéance",
+  "onMeDoitCetArgent": "On me doit cet argent",
+  "parDefautUneDetteQueJeDois": "Par défaut, c'est une dette que je dois",
+  "rembourserPerson": "Rembourser {personName}",
+  "@rembourserPerson": {
+    "placeholders": {
+      "personName": {
+        "type": "String"
+      }
+    }
+  },
+  "montantDuRemboursement": "Montant du remboursement",
+  "montantInvalide": "Montant invalide.",
+  "leMontantNePeutPasDepasserLeSoldeRestant": "Le montant ne peut pas dépasser le solde restant ({remainingAmount} Fcfa).",
+  "@leMontantNePeutPasDepasserLeSoldeRestant": {
+    "placeholders": {
+      "remainingAmount": {
+        "type": "String"
+      }
+    }
+  },
+  "notesOptionnel": "Notes (optionnel)",
+  "selectionnerUneDetteARembourser": "Sélectionner une dette à rembourser",
+  "vousNavezAucuneDetteEnCours": "Vous n'avez aucune dette en cours.",
+  "ajouterUnRemboursement": "Ajouter un remboursement",
+  "montant": "Montant",
+  "leMontantNePeutPasDepasserLeSoldeRestantSimple": "Le montant ne peut pas dépasser le solde restant.",
+  "confirmerLaSuppression": "Confirmer la suppression",
+  "etesVousSurDeVouloirSupprimerCetteDette": "Êtes-vous sûr de vouloir supprimer cette dette ?",
+  "supprimer": "Supprimer",
+  "historiqueDesRemboursements": "Historique des remboursements",
+  "montantTotalDeuxPoints": "Montant total:",
+  "montantRestantDeuxPoints": "Montant restant:",
+  "dateEcheanceDeuxPoints": "Date d'échéance:",
+  "statutDeuxPoints": "Statut:",
+  "rembourse": "Remboursé",
+  "enCours": "En cours",
+  "aucunRemboursementPourLeMoment": "Aucun remboursement pour le moment.",
+  "notes": "Notes",
+  "fermer": "Fermer",
+  "tableauDeBord": "Tableau de bord",
+  "paiementsParPersonne": "Paiements par personne",
+  "bienvenueSurAkontaa": "Bienvenue sur Akontaa!",
+  "ceciEstLeTitreDeLApplication": "Ceci est le titre de l'application. Il indique la page actuelle.",
+  "accedezAuxParametresDeLApplicationIci": "Accédez aux paramètres de l'application ici.",
+  "vueDEnsembleDeVosDettesEtCreances": "Vue d'ensemble de vos dettes et créances.",
+  "gerezLArgentQueVousDevez": "Gérez l'argent que vous devez.",
+  "gerezLArgentQueLonVousDoit": "Gérez l'argent que l'on vous doit.",
+  "paiements": "Paiements",
+  "historiqueDeTousLesPaiements": "Historique de tous les paiements.",
+  "passer": "PASSER",
+  "dash": "Dash",
+  "vousNavezAucuneDettePourLeMoment": "Vous n'avez aucune dette pour le moment.",
+  "personneNeVousDoitDArgent": "Personne ne vous doit d'argent.",
+  "historiqueDesTransactions": "Historique des transactions",
+  "typeDette": "Type: Dette",
+  "personne": "Personne",
+  "typeRemboursement": "Type: Remboursement",
+  "aDe": "À/De",
+  "notesPreuve": "Notes/Preuve",
+  "aucune": "Aucune",
+  "aucuneTransactionAImprimer": "Aucune transaction à imprimer.",
+  "imprimerLHistorique": "Imprimer l'historique",
+  "toutesLesTransactions": "Toutes les transactions",
+  "aucuneTransactionCorrespondanteAImprimer": "Aucune transaction correspondante à imprimer.",
+  "dettes": "Dettes",
+  "aucuneDetteAAfficher": "Aucune dette à afficher.",
+  "totalRembourse": "Total remboursé",
+  "solde": "Soldé",
+  "reste": "Reste",
+  "detteDescription": "Dette: {description} - {totalAmount} Fcfa",
+  "@detteDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      },
+      "totalAmount": {
+        "type": "String"
+      }
+    }
+  },
+  "echeance": "Échéance",
+  "remboursement": "Remboursement",
+  "aucunRemboursementEnregistrePourCetteDette": "Aucun remboursement enregistré pour cette dette."
 }

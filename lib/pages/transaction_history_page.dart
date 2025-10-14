@@ -1,3 +1,4 @@
+import 'package:akontaa/l10n/app_localizations.dart';
 import 'package:akontaa/providers/debt_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,7 @@ import '../models/debt.dart';
 import '../models/repayment.dart';
 import '../models/transaction.dart' as app_transaction; // Alias to avoid conflict with flutter's Transaction
 import '../app_colors.dart'; // Import AppColors
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum _DebtFilter { myDebts, owedToMe }
 
@@ -25,13 +27,14 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
 
   Future<void> _generatePdf(BuildContext context, List<app_transaction.Transaction> transactions) async {
     final pdf = pw.Document();
+    final localizations = AppLocalizations.of(context)!;
 
     pdf.addPage(
       pw.MultiPage(
         build: (pw.Context pwContext) => [
           pw.Center(
             child: pw.Text(
-              'Historique des transactions',
+              localizations.historiqueDesTransactions,
               style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
             ),
           ),
@@ -42,12 +45,12 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
               return pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text('Type: Dette', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('  Personne: ${debt.personName}'),
-                  pw.Text('  Description: ${debt.description}'),
-                  pw.Text('  Montant total: ${debt.totalAmount} Fcfa'),
-                  pw.Text('  Date d\'échéance: ${DateFormat.yMd().format(debt.dueDate)}'),
-                  pw.Text('  Statut: ${debt.isPaid ? 'Remboursé' : 'En cours'}'),
+                  pw.Text(localizations.typeDette, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('  ${localizations.personne}: ${debt.personName}'),
+                  pw.Text('  ${localizations.description}: ${debt.description}'),
+                  pw.Text('  ${localizations.montantTotal}: ${debt.totalAmount} Fcfa'),
+                  pw.Text('  ${localizations.dateEcheance}: ${DateFormat.yMd().format(debt.dueDate)}'),
+                  pw.Text('  Statut: ${debt.isPaid ? localizations.rembourse : localizations.enCours}'),
                   pw.Divider(),
                 ],
               );
@@ -58,11 +61,11 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
               return pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text('Type: Remboursement', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('  À/De: ${debt.personName}'),
-                  pw.Text('  Montant: ${repayment.amount} Fcfa'),
+                  pw.Text(localizations.typeRemboursement, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('  ${localizations.aDe}: ${debt.personName}'),
+                  pw.Text('  ${localizations.montant}: ${repayment.amount} Fcfa'),
                   pw.Text('  Date: ${DateFormat.yMd().format(repayment.date)}'),
-                  pw.Text('  Notes/Preuve: ${repayment.notes ?? 'Aucune'}'), // Updated label
+                  pw.Text('  ${localizations.notesPreuve}: ${repayment.notes ?? localizations.aucune}'), // Updated label
                   pw.Divider(),
                 ],
               );
@@ -78,10 +81,11 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
   void _printTransactions(BuildContext context) async {
     final debtProvider = Provider.of<DebtProvider>(context, listen: false);
     final allTransactions = debtProvider.allTransactions;
+    final localizations = AppLocalizations.of(context)!;
 
     if (allTransactions.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Aucune transaction à imprimer.')),
+        SnackBar(content: Text(localizations.aucuneTransactionAImprimer)),
       );
       return;
     }
@@ -91,25 +95,25 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
       context: context,
       builder: (BuildContext dialogContext) {
         return SimpleDialog(
-          title: const Text('Imprimer l\'historique'),
+          title: Text(localizations.imprimerLHistorique),
           children: <Widget>[
             SimpleDialogOption(
               onPressed: () {
                 Navigator.pop(dialogContext, 'all');
               },
-              child: const Text('Toutes les transactions'),
+              child: Text(localizations.toutesLesTransactions),
             ),
             SimpleDialogOption(
               onPressed: () {
                 Navigator.pop(dialogContext, 'myDebts');
               },
-              child: const Text('Mes dettes'),
+              child: Text(localizations.mesDettes),
             ),
             SimpleDialogOption(
               onPressed: () {
                 Navigator.pop(dialogContext, 'owedToMe');
               },
-              child: const Text('On me doit'),
+              child: Text(localizations.onMeDoit),
             ),
           ],
         );
@@ -135,7 +139,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
 
     if (filteredTransactions.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Aucune transaction correspondante à imprimer.')),
+        SnackBar(content: Text(localizations.aucuneTransactionCorrespondanteAImprimer)),
       );
       return;
     }
@@ -146,6 +150,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
   @override
   Widget build(BuildContext context) {
     final debtProvider = Provider.of<DebtProvider>(context);
+    final localizations = AppLocalizations.of(context)!;
 
     // Filter debts based on the selected tab
     final List<Debt> filteredDebts = debtProvider.debts.where((debt) {
@@ -169,7 +174,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: const Text('Historique des transactions'),
+        title: Text(localizations.historiqueDesTransactions),
         actions: [
           IconButton(
             icon: const Icon(Icons.print),
@@ -183,14 +188,14 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
             child: Center(
               child: SegmentedButton<_DebtFilter>(
-                segments: const <ButtonSegment<_DebtFilter>>[
+                segments: <ButtonSegment<_DebtFilter>>[
                   ButtonSegment<_DebtFilter>(
                     value: _DebtFilter.myDebts,
-                    label: Text('Dettes', style: TextStyle(fontSize: 16)),
+                    label: Text(localizations.dettes, style: TextStyle(fontSize: 16)),
                   ),
                   ButtonSegment<_DebtFilter>(
                     value: _DebtFilter.owedToMe,
-                    label: Text('On me doit', style: TextStyle(fontSize: 16)),
+                    label: Text(localizations.onMeDoit, style: TextStyle(fontSize: 16)),
                   ),
                 ],
                 selected: <_DebtFilter>{_selectedFilter},
@@ -237,8 +242,8 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                         const SizedBox(height: 16),
                         Text(
                           _selectedFilter == _DebtFilter.myDebts
-                              ? 'Aucune dette à afficher.'
-                              : 'Personne ne vous doit d\'argent.',
+                              ? localizations.aucuneDetteAAfficher
+                              : localizations.personneNeVousDoitDArgent,
                           style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                         ),
                       ],
@@ -280,7 +285,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Total remboursé: ${totalRepaid.toStringAsFixed(0)} Fcfa / ${totalDebtAmount.toStringAsFixed(0)} Fcfa',
+                                '${localizations.totalRembourse}: ${totalRepaid.toStringAsFixed(0)} Fcfa / ${totalDebtAmount.toStringAsFixed(0)} Fcfa',
                                 style: TextStyle(color: Colors.grey[700]),
                               ),
                               const SizedBox(height: 4),
@@ -297,7 +302,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                allPaid ? 'Soldé' : 'En cours',
+                                allPaid ? localizations.solde : localizations.enCours,
                                 style: TextStyle(
                                   color: allPaid ? Colors.green : Colors.orange,
                                   fontWeight: FontWeight.bold,
@@ -305,12 +310,12 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                               ),
                               if (!allPaid && _selectedFilter == _DebtFilter.myDebts)
                                 Text(
-                                  'Reste: ${(totalDebtAmount - totalRepaid).toStringAsFixed(0)} Fcfa',
+                                  '${localizations.reste}: ${(totalDebtAmount - totalRepaid).toStringAsFixed(0)} Fcfa',
                                   style: const TextStyle(color: Colors.red, fontSize: 12),
                                 ),
                               if (!allPaid && _selectedFilter == _DebtFilter.owedToMe)
                                 Text(
-                                  'Reste: ${(totalDebtAmount - totalRepaid).toStringAsFixed(0)} Fcfa',
+                                  '${localizations.reste}: ${(totalDebtAmount - totalRepaid).toStringAsFixed(0)} Fcfa',
                                   style: const TextStyle(color: Colors.green, fontSize: 12),
                                 ),
                             ],
@@ -323,11 +328,11 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Dette: ${debt.description} - ${debt.totalAmount.toStringAsFixed(0)} Fcfa',
+                                      localizations.detteDescription(debt.description, debt.totalAmount.toStringAsFixed(0)),
                                       style: const TextStyle(fontWeight: FontWeight.w600),
                                     ),
                                     Text(
-                                      'Échéance: ${DateFormat.yMd().format(debt.dueDate)}',
+                                      '${localizations.echeance}: ${DateFormat.yMd().format(debt.dueDate)}',
                                       style: TextStyle(color: Colors.grey[600], fontSize: 12),
                                     ),
                                     ...debt.repayments.map((repayment) {
@@ -338,7 +343,7 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                                             Icon(Icons.check_circle, color: Colors.green[400], size: 16),
                                             const SizedBox(width: 8),
                                             Text(
-                                              'Remboursement: ${repayment.amount.toStringAsFixed(0)} Fcfa le ${DateFormat.yMd().format(repayment.date)}',
+                                              '${localizations.remboursement}: ${repayment.amount.toStringAsFixed(0)} Fcfa le ${DateFormat.yMd().format(repayment.date)}',
                                               style: TextStyle(color: Colors.grey[800]),
                                             ),
                                           ],
@@ -346,9 +351,9 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                                       );
                                     }).toList(),
                                     if (debt.repayments.isEmpty)
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 16.0, top: 4.0),
-                                        child: Text('Aucun remboursement enregistré pour cette dette.', style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 16.0, top: 4.0),
+                                        child: Text(localizations.aucunRemboursementEnregistrePourCetteDette, style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
                                       ),
                                     const Divider(height: 16, thickness: 1),
                                   ],

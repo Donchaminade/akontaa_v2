@@ -22,5 +22,96 @@
   "mesDettesSeulement": "My debts only",
   "onMeDoitSeulement": "Owed to me only",
   "toutSupprimer": "Delete all",
-  "autorisationDeNotificationRefusee": "Notification permission denied. Please enable it in your phone settings."
+  "autorisationDeNotificationRefusee": "Notification permission denied. Please enable it in your phone settings.",
+  "ajouterUneDette": "Add a debt",
+  "modifierLaDette": "Edit debt",
+  "nomDeLaPersonne": "Person's name",
+  "veuillezEntrerUnNom": "Please enter a name.",
+  "montantTotal": "Total amount",
+  "veuillezEntrerUnMontantValide": "Please enter a valid amount.",
+  "description": "Description",
+  "dateEcheance": "Due date",
+  "onMeDoitCetArgent": "This money is owed to me",
+  "parDefautUneDetteQueJeDois": "By default, this is a debt I owe",
+  "rembourserPerson": "Repay {personName}",
+  "@rembourserPerson": {
+    "placeholders": {
+      "personName": {
+        "type": "String"
+      }
+    }
+  },
+  "montantDuRemboursement": "Repayment amount",
+  "montantInvalide": "Invalid amount.",
+  "leMontantNePeutPasDepasserLeSoldeRestant": "The amount cannot exceed the remaining balance ({remainingAmount} Fcfa).",
+  "@leMontantNePeutPasDepasserLeSoldeRestant": {
+    "placeholders": {
+      "remainingAmount": {
+        "type": "String"
+      }
+    }
+  },
+  "notesOptionnel": "Notes (optional)",
+  "selectionnerUneDetteARembourser": "Select a debt to repay",
+  "vousNavezAucuneDetteEnCours": "You have no outstanding debts.",
+  "ajouterUnRemboursement": "Add a repayment",
+  "montant": "Amount",
+  "leMontantNePeutPasDepasserLeSoldeRestantSimple": "The amount cannot exceed the remaining balance.",
+  "confirmerLaSuppression": "Confirm deletion",
+  "etesVousSurDeVouloirSupprimerCetteDette": "Are you sure you want to delete this debt?",
+  "supprimer": "Delete",
+  "historiqueDesRemboursements": "Repayment history",
+  "montantTotalDeuxPoints": "Total amount:",
+  "montantRestantDeuxPoints": "Remaining amount:",
+  "dateEcheanceDeuxPoints": "Due date:",
+  "statutDeuxPoints": "Status:",
+  "rembourse": "Repaid",
+  "enCours": "In progress",
+  "aucunRemboursementPourLeMoment": "No repayments yet.",
+  "notes": "Notes",
+  "fermer": "Close",
+  "tableauDeBord": "Dashboard",
+  "paiementsParPersonne": "Payments by person",
+  "bienvenueSurAkontaa": "Welcome to Akontaa!",
+  "ceciEstLeTitreDeLApplication": "This is the application title. It indicates the current page.",
+  "accedezAuxParametresDeLApplicationIci": "Access the application settings here.",
+  "vueDEnsembleDeVosDettesEtCreances": "Overview of your debts and receivables.",
+  "gerezLArgentQueVousDevez": "Manage the money you owe.",
+  "gerezLArgentQueLonVousDoit": "Manage the money owed to you.",
+  "paiements": "Payments",
+  "historiqueDeTousLesPaiements": "History of all payments.",
+  "passer": "SKIP",
+  "dash": "Dash",
+  "vousNavezAucuneDettePourLeMoment": "You have no debts at the moment.",
+  "personneNeVousDoitDArgent": "Nobody owes you money.",
+  "historiqueDesTransactions": "Transaction history",
+  "typeDette": "Type: Debt",
+  "personne": "Person",
+  "typeRemboursement": "Type: Repayment",
+  "aDe": "To/From",
+  "notesPreuve": "Notes/Proof",
+  "aucune": "None",
+  "aucuneTransactionAImprimer": "No transactions to print.",
+  "imprimerLHistorique": "Print history",
+  "toutesLesTransactions": "All transactions",
+  "aucuneTransactionCorrespondanteAImprimer": "No matching transactions to print.",
+  "dettes": "Debts",
+  "aucuneDetteAAfficher": "No debts to display.",
+  "totalRembourse": "Total repaid",
+  "solde": "Paid off",
+  "reste": "Remaining",
+  "detteDescription": "Debt: {description} - {totalAmount} Fcfa",
+  "@detteDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      },
+      "totalAmount": {
+        "type": "String"
+      }
+    }
+  },
+  "echeance": "Due date",
+  "remboursement": "Repayment",
+  "aucunRemboursementEnregistrePourCetteDette": "No repayment recorded for this debt."
 }

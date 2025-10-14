@@ -235,6 +235,408 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notification permission denied. Please enable it in your phone settings.'**
   String get autorisationDeNotificationRefusee;
+
+  /// No description provided for @ajouterUneDette.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a debt'**
+  String get ajouterUneDette;
+
+  /// No description provided for @modifierLaDette.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit debt'**
+  String get modifierLaDette;
+
+  /// No description provided for @nomDeLaPersonne.
+  ///
+  /// In en, this message translates to:
+  /// **'Person\'s name'**
+  String get nomDeLaPersonne;
+
+  /// No description provided for @veuillezEntrerUnNom.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a name.'**
+  String get veuillezEntrerUnNom;
+
+  /// No description provided for @montantTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total amount'**
+  String get montantTotal;
+
+  /// No description provided for @veuillezEntrerUnMontantValide.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid amount.'**
+  String get veuillezEntrerUnMontantValide;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @dateEcheance.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get dateEcheance;
+
+  /// No description provided for @onMeDoitCetArgent.
+  ///
+  /// In en, this message translates to:
+  /// **'This money is owed to me'**
+  String get onMeDoitCetArgent;
+
+  /// No description provided for @parDefautUneDetteQueJeDois.
+  ///
+  /// In en, this message translates to:
+  /// **'By default, this is a debt I owe'**
+  String get parDefautUneDetteQueJeDois;
+
+  /// No description provided for @rembourserPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Repay {personName}'**
+  String rembourserPerson(String personName);
+
+  /// No description provided for @montantDuRemboursement.
+  ///
+  /// In en, this message translates to:
+  /// **'Repayment amount'**
+  String get montantDuRemboursement;
+
+  /// No description provided for @montantInvalide.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid amount.'**
+  String get montantInvalide;
+
+  /// No description provided for @leMontantNePeutPasDepasserLeSoldeRestant.
+  ///
+  /// In en, this message translates to:
+  /// **'The amount cannot exceed the remaining balance ({remainingAmount} Fcfa).'**
+  String leMontantNePeutPasDepasserLeSoldeRestant(String remainingAmount);
+
+  /// No description provided for @notesOptionnel.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get notesOptionnel;
+
+  /// No description provided for @selectionnerUneDetteARembourser.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a debt to repay'**
+  String get selectionnerUneDetteARembourser;
+
+  /// No description provided for @vousNavezAucuneDetteEnCours.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no outstanding debts.'**
+  String get vousNavezAucuneDetteEnCours;
+
+  /// No description provided for @ajouterUnRemboursement.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a repayment'**
+  String get ajouterUnRemboursement;
+
+  /// No description provided for @montant.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get montant;
+
+  /// No description provided for @leMontantNePeutPasDepasserLeSoldeRestantSimple.
+  ///
+  /// In en, this message translates to:
+  /// **'The amount cannot exceed the remaining balance.'**
+  String get leMontantNePeutPasDepasserLeSoldeRestantSimple;
+
+  /// No description provided for @confirmerLaSuppression.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm deletion'**
+  String get confirmerLaSuppression;
+
+  /// No description provided for @etesVousSurDeVouloirSupprimerCetteDette.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this debt?'**
+  String get etesVousSurDeVouloirSupprimerCetteDette;
+
+  /// No description provided for @supprimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get supprimer;
+
+  /// No description provided for @historiqueDesRemboursements.
+  ///
+  /// In en, this message translates to:
+  /// **'Repayment history'**
+  String get historiqueDesRemboursements;
+
+  /// No description provided for @montantTotalDeuxPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Total amount:'**
+  String get montantTotalDeuxPoints;
+
+  /// No description provided for @montantRestantDeuxPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining amount:'**
+  String get montantRestantDeuxPoints;
+
+  /// No description provided for @dateEcheanceDeuxPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date:'**
+  String get dateEcheanceDeuxPoints;
+
+  /// No description provided for @statutDeuxPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Status:'**
+  String get statutDeuxPoints;
+
+  /// No description provided for @rembourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Repaid'**
+  String get rembourse;
+
+  /// No description provided for @enCours.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get enCours;
+
+  /// No description provided for @aucunRemboursementPourLeMoment.
+  ///
+  /// In en, this message translates to:
+  /// **'No repayments yet.'**
+  String get aucunRemboursementPourLeMoment;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @fermer.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get fermer;
+
+  /// No description provided for @tableauDeBord.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get tableauDeBord;
+
+  /// No description provided for @paiementsParPersonne.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments by person'**
+  String get paiementsParPersonne;
+
+  /// No description provided for @bienvenueSurAkontaa.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Akontaa!'**
+  String get bienvenueSurAkontaa;
+
+  /// No description provided for @ceciEstLeTitreDeLApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'This is the application title. It indicates the current page.'**
+  String get ceciEstLeTitreDeLApplication;
+
+  /// No description provided for @accedezAuxParametresDeLApplicationIci.
+  ///
+  /// In en, this message translates to:
+  /// **'Access the application settings here.'**
+  String get accedezAuxParametresDeLApplicationIci;
+
+  /// No description provided for @vueDEnsembleDeVosDettesEtCreances.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview of your debts and receivables.'**
+  String get vueDEnsembleDeVosDettesEtCreances;
+
+  /// No description provided for @gerezLArgentQueVousDevez.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage the money you owe.'**
+  String get gerezLArgentQueVousDevez;
+
+  /// No description provided for @gerezLArgentQueLonVousDoit.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage the money owed to you.'**
+  String get gerezLArgentQueLonVousDoit;
+
+  /// No description provided for @paiements.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get paiements;
+
+  /// No description provided for @historiqueDeTousLesPaiements.
+  ///
+  /// In en, this message translates to:
+  /// **'History of all payments.'**
+  String get historiqueDeTousLesPaiements;
+
+  /// No description provided for @passer.
+  ///
+  /// In en, this message translates to:
+  /// **'SKIP'**
+  String get passer;
+
+  /// No description provided for @dash.
+  ///
+  /// In en, this message translates to:
+  /// **'Dash'**
+  String get dash;
+
+  /// No description provided for @vousNavezAucuneDettePourLeMoment.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no debts at the moment.'**
+  String get vousNavezAucuneDettePourLeMoment;
+
+  /// No description provided for @personneNeVousDoitDArgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody owes you money.'**
+  String get personneNeVousDoitDArgent;
+
+  /// No description provided for @historiqueDesTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction history'**
+  String get historiqueDesTransactions;
+
+  /// No description provided for @typeDette.
+  ///
+  /// In en, this message translates to:
+  /// **'Type: Debt'**
+  String get typeDette;
+
+  /// No description provided for @personne.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get personne;
+
+  /// No description provided for @typeRemboursement.
+  ///
+  /// In en, this message translates to:
+  /// **'Type: Repayment'**
+  String get typeRemboursement;
+
+  /// No description provided for @aDe.
+  ///
+  /// In en, this message translates to:
+  /// **'To/From'**
+  String get aDe;
+
+  /// No description provided for @notesPreuve.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes/Proof'**
+  String get notesPreuve;
+
+  /// No description provided for @aucune.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get aucune;
+
+  /// No description provided for @aucuneTransactionAImprimer.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions to print.'**
+  String get aucuneTransactionAImprimer;
+
+  /// No description provided for @imprimerLHistorique.
+  ///
+  /// In en, this message translates to:
+  /// **'Print history'**
+  String get imprimerLHistorique;
+
+  /// No description provided for @toutesLesTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'All transactions'**
+  String get toutesLesTransactions;
+
+  /// No description provided for @aucuneTransactionCorrespondanteAImprimer.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching transactions to print.'**
+  String get aucuneTransactionCorrespondanteAImprimer;
+
+  /// No description provided for @dettes.
+  ///
+  /// In en, this message translates to:
+  /// **'Debts'**
+  String get dettes;
+
+  /// No description provided for @aucuneDetteAAfficher.
+  ///
+  /// In en, this message translates to:
+  /// **'No debts to display.'**
+  String get aucuneDetteAAfficher;
+
+  /// No description provided for @totalRembourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Total repaid'**
+  String get totalRembourse;
+
+  /// No description provided for @solde.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid off'**
+  String get solde;
+
+  /// No description provided for @reste.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get reste;
+
+  /// No description provided for @detteDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Debt: {description} - {totalAmount} Fcfa'**
+  String detteDescription(String description, String totalAmount);
+
+  /// No description provided for @echeance.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get echeance;
+
+  /// No description provided for @remboursement.
+  ///
+  /// In en, this message translates to:
+  /// **'Repayment'**
+  String get remboursement;
+
+  /// No description provided for @aucunRemboursementEnregistrePourCetteDette.
+  ///
+  /// In en, this message translates to:
+  /// **'No repayment recorded for this debt.'**
+  String get aucunRemboursementEnregistrePourCetteDette;
 }
 
 class _AppLocalizationsDelegate

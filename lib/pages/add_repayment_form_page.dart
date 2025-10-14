@@ -1,10 +1,12 @@
 
+import 'package:akontaa/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../models/debt.dart';
 import '../models/repayment.dart';
 import '../providers/debt_provider.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddRepaymentFormPage extends StatefulWidget {
   final Debt debt;
@@ -51,10 +53,11 @@ class _AddRepaymentFormPageState extends State<AddRepaymentFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text('Rembourser ${widget.debt.personName}'),
+        title: Text(localizations.rembourserPerson(widget.debt.personName)),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -75,7 +78,7 @@ class _AddRepaymentFormPageState extends State<AddRepaymentFormPage> {
                     child: TextFormField(
                       controller: _amountController,
                       decoration: InputDecoration(
-                        labelText: 'Montant du remboursement',
+                        labelText: localizations.montantDuRemboursement,
                         prefixIcon: Icon(Icons.attach_money, color: Theme.of(context).colorScheme.secondary),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
@@ -88,10 +91,10 @@ class _AddRepaymentFormPageState extends State<AddRepaymentFormPage> {
                         if (value == null ||
                             double.tryParse(value) == null ||
                             double.parse(value) <= 0) {
-                          return 'Montant invalide.';
+                          return localizations.montantInvalide;
                         }
                         if (double.parse(value) > widget.debt.remainingAmount) {
-                          return 'Le montant ne peut pas dépasser le solde restant (${widget.debt.remainingAmount.toStringAsFixed(2)} Fcfa).';
+                          return localizations.leMontantNePeutPasDepasserLeSoldeRestant(widget.debt.remainingAmount.toStringAsFixed(2));
                         }
                         return null;
                       },
@@ -108,7 +111,7 @@ class _AddRepaymentFormPageState extends State<AddRepaymentFormPage> {
                     child: TextFormField(
                       controller: _notesController,
                       decoration: InputDecoration(
-                        labelText: 'Notes (optionnel)',
+                        labelText: localizations.notesOptionnel,
                         prefixIcon: Icon(Icons.note, color: Theme.of(context).colorScheme.secondary),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(

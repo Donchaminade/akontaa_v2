@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:akontaa/app_colors.dart';
+import 'package:akontaa/l10n/app_localizations.dart';
 import 'package:akontaa/pages/dashboard_page.dart';
 import 'package:akontaa/pages/my_debts_page.dart';
 import 'package:akontaa/pages/owed_to_me_page.dart';
@@ -8,6 +9,7 @@ import 'package:akontaa/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   final bool showOnboarding;
@@ -28,25 +30,32 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey _owedToMeNavItemKey = GlobalKey();
   final GlobalKey _paymentsNavItemKey = GlobalKey();
 
-  final List<Widget> _pages = [
-    const DashboardPage(),
-    const MyDebtsPage(),
-    const OwedToMePage(),
-    const TransactionHistoryPage(),
-  ];
+  late List<Widget> _pages;
+  late List<String> _pageTitles;
 
-  final List<String> _pageTitles = [
-    'Tableau de bord',
-    'Mes dettes',
-    'On me doit',
-    'Paiements par personne',
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final localizations = AppLocalizations.of(context)!;
+    _pages = [
+      const DashboardPage(),
+      const MyDebtsPage(),
+      const OwedToMePage(),
+      const TransactionHistoryPage(),
+    ];
+    _pageTitles = [
+      localizations.tableauDeBord,
+      localizations.mesDettes,
+      localizations.onMeDoit,
+      localizations.paiementsParPersonne,
+    ];
+  }
 
   @override
   void initState() {
     super.initState();
     if (widget.showOnboarding) {
-      _showOnboarding();
+      WidgetsBinding.instance.addPostFrameCallback((_) => _showOnboarding());
     }
   }
 
@@ -57,6 +66,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showOnboarding() async {
+    final localizations = AppLocalizations.of(context)!;
     List<TargetFocus> targets = [];
 
     targets.add(
@@ -72,7 +82,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Bienvenue sur Akontaa!",
+                  localizations.bienvenueSurAkontaa,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -82,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                    "Ceci est le titre de l'application. Il indique la page actuelle.",
+                    localizations.ceciEstLeTitreDeLApplication,
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -106,7 +116,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Paramètres",
+                  localizations.parametres,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -116,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                    "Accédez aux paramètres de l'application ici.",
+                    localizations.accedezAuxParametresDeLApplicationIci,
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -140,7 +150,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Tableau de bord",
+                  localizations.tableauDeBord,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -150,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                    "Vue d'ensemble de vos dettes et créances.",
+                    localizations.vueDEnsembleDeVosDettesEtCreances,
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -174,7 +184,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Mes dettes",
+                  localizations.mesDettes,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -184,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                    "Gérez l'argent que vous devez.",
+                    localizations.gerezLArgentQueVousDevez,
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -208,7 +218,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "On me doit",
+                  localizations.onMeDoit,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -218,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                    "Gérez l'argent que l'on vous doit.",
+                    localizations.gerezLArgentQueLonVousDoit,
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -242,7 +252,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Paiements",
+                  localizations.paiements,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -252,7 +262,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                    "Historique de tous les paiements.",
+                    localizations.historiqueDeTousLesPaiements,
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -265,7 +275,7 @@ class _HomePageState extends State<HomePage> {
 
     TutorialCoachMark(targets: targets, 
       colorShadow: Colors.black,
-      textSkip: "PASSER",
+      textSkip: localizations.passer,
       paddingFocus: 10,
       opacityShadow: 0.8,
       onFinish: () async {
@@ -283,11 +293,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(_pageTitles[_selectedIndex], key: _appBarTitleKey),
         actions: [
           IconButton(
+            key: _settingsButtonKey,
             icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.of(context).push(
@@ -314,19 +326,19 @@ class _HomePageState extends State<HomePage> {
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(_selectedIndex == 0 ? Icons.dashboard_rounded : Icons.dashboard_outlined, key: _dashboardNavItemKey),
-                  label: 'Dash',
+                  label: localizations.dash,
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(_selectedIndex == 1 ? Icons.arrow_upward_rounded : Icons.arrow_upward_outlined, key: _myDebtsNavItemKey),
-                  label: 'Mes dettes',
+                  label: localizations.mesDettes,
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(_selectedIndex == 2 ? Icons.arrow_downward_rounded : Icons.arrow_downward_outlined, key: _owedToMeNavItemKey),
-                  label: 'On me doit',
+                  label: localizations.onMeDoit,
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(_selectedIndex == 3 ? Icons.people_alt : Icons.people_outline, key: _paymentsNavItemKey),
-                  label: 'Paiements',
+                  label: localizations.paiements,
                 ),
               ],
               currentIndex: _selectedIndex,

@@ -1,5 +1,7 @@
+import 'package:akontaa/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../providers/debt_provider.dart';
 import '../widgets/debt_card.dart';
 
@@ -10,20 +12,23 @@ class MyDebtsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final debtProvider = Provider.of<DebtProvider>(context);
     final myDebts = debtProvider.myDebts;
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: myDebts.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
-                'Vous n\'avez aucune dette. Félicitations !',
+                localizations.vousNavezAucuneDettePourLeMoment,
+                style: const TextStyle(fontSize: 18, color: Colors.white),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
               ),
             )
           : ListView.builder(
-              padding: const EdgeInsets.all(8.0),
               itemCount: myDebts.length,
-              itemBuilder: (ctx, i) => DebtCard(debt: myDebts[i]),
+              itemBuilder: (context, index) {
+                return DebtCard(debt: myDebts[index]);
+              },
             ),
     );
   }

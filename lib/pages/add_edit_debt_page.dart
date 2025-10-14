@@ -1,9 +1,11 @@
+import 'package:akontaa/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../models/debt.dart';
 import '../providers/debt_provider.dart';
 import 'package:intl/intl.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddEditDebtPage extends StatefulWidget {
   final Debt? debt;
@@ -101,10 +103,11 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(widget.debt == null ? 'Ajouter une dette' : 'Modifier la dette'),
+        title: Text(widget.debt == null ? localizations.ajouterUneDette : localizations.modifierLaDette),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -125,7 +128,7 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                     child: TextFormField(
                       initialValue: _personName,
                       decoration: InputDecoration(
-                        labelText: 'Nom de la personne',
+                        labelText: localizations.nomDeLaPersonne,
                         prefixIcon: Icon(Icons.person, color: Theme.of(context).colorScheme.secondary),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
@@ -135,7 +138,7 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Veuillez entrer un nom.';
+                          return localizations.veuillezEntrerUnNom;
                         }
                         return null;
                       },
@@ -153,7 +156,7 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                     child: TextFormField(
                       initialValue: _totalAmount != 0 ? _totalAmount.toString() : '',
                       decoration: InputDecoration(
-                        labelText: 'Montant total',
+                        labelText: localizations.montantTotal,
                         prefixIcon: Icon(Icons.attach_money, color: Theme.of(context).colorScheme.secondary),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
@@ -166,7 +169,7 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                         if (value == null ||
                             double.tryParse(value) == null ||
                             double.parse(value) <= 0) {
-                          return 'Veuillez entrer un montant valide.';
+                          return localizations.veuillezEntrerUnMontantValide;
                         }
                         return null;
                       },
@@ -184,7 +187,7 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                     child: TextFormField(
                       initialValue: _description,
                       decoration: InputDecoration(
-                        labelText: 'Description',
+                        labelText: localizations.description,
                         prefixIcon: Icon(Icons.description, color: Theme.of(context).colorScheme.secondary),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
@@ -207,7 +210,7 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                     child: TextFormField(
                       controller: _dueDateController,
                       decoration: InputDecoration(
-                        labelText: 'Date d\'échéance',
+                        labelText: localizations.dateEcheance,
                         prefixIcon: Icon(Icons.calendar_today, color: Theme.of(context).colorScheme.secondary),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
@@ -231,7 +234,7 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                     child: SwitchListTile(
-                      title: const Text('On me doit cet argent'),
+                      title: Text(localizations.onMeDoitCetArgent),
                       value: _isOwedToMe,
                       onChanged: (bool value) {
                         setState(() {

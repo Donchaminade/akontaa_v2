@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:akontaa/app_colors.dart';
+import 'package:akontaa/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import '../models/debt.dart';
 import '../models/repayment.dart';
 import '../providers/debt_provider.dart';
 import 'add_edit_debt_page.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DebtDetailPage extends StatelessWidget {
   final String debtId;
@@ -18,6 +20,7 @@ class DebtDetailPage extends StatelessWidget {
     final amountController = TextEditingController();
     final notesController = TextEditingController();
     final formKey = GlobalKey<FormState>();
+    final localizations = AppLocalizations.of(context)!;
 
     showDialog(
       context: context,
@@ -25,7 +28,7 @@ class DebtDetailPage extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-          title: const Text('Ajouter un remboursement'),
+          title: Text(localizations.ajouterUnRemboursement),
           content: Form(
             key: formKey,
             child: Column(
@@ -33,16 +36,16 @@ class DebtDetailPage extends StatelessWidget {
               children: [
                 TextFormField(
                   controller: amountController,
-                  decoration: const InputDecoration(labelText: 'Montant'),
+                  decoration: InputDecoration(labelText: localizations.montant),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null ||
                         double.tryParse(value) == null ||
                         double.parse(value) <= 0) {
-                      return 'Montant invalide.';
+                      return localizations.montantInvalide;
                     }
                     if (double.parse(value) > debt.remainingAmount) {
-                      return 'Le montant ne peut pas dépasser le solde restant.';
+                      return localizations.leMontantNePeutPasDepasserLeSoldeRestantSimple;
                     }
                     return null;
                   },
@@ -50,14 +53,14 @@ class DebtDetailPage extends StatelessWidget {
                 const SizedBox(height: 10),
                 TextFormField(
                   controller: notesController,
-                  decoration: const InputDecoration(labelText: 'Notes (optionnel)'),
+                  decoration: InputDecoration(labelText: localizations.notesOptionnel),
                 ),
               ],
             ),
           ),
           actions: [
             TextButton(
-              child: const Text('Annuler'),
+              child: Text(localizations.annuler),
               onPressed: () => Navigator.of(ctx).pop(),
             ),
             ElevatedButton(
@@ -65,7 +68,7 @@ class DebtDetailPage extends StatelessWidget {
                 backgroundColor: AppColors.green,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Ajouter'),
+              child: Text(localizations.ajouter),
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   final newRepayment = Repayment(
@@ -89,6 +92,7 @@ class DebtDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final debt = Provider.of<DebtProvider>(context).findById(debtId);
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -116,16 +120,16 @@ class DebtDetailPage extends StatelessWidget {
                   filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                   child: AlertDialog(
                     backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-                    title: const Text('Confirmer la suppression'),
-                    content: const Text(
-                        'Êtes-vous sûr de vouloir supprimer cette dette ?'),
+                    title: Text(localizations.confirmerLaSuppression),
+                    content: Text(
+                        localizations.etesVousSurDeVouloirSupprimerCetteDette),
                     actions: [
                       TextButton(
-                        child: const Text('Annuler'),
+                        child: Text(localizations.annuler),
                         onPressed: () => Navigator.of(ctx).pop(),
                       ),
                       TextButton(
-                        child: Text('Supprimer', style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                        child: Text(localizations.supprimer, style: TextStyle(color: Theme.of(context).colorScheme.error)),
                         onPressed: () {
                           Provider.of<DebtProvider>(context, listen: false)
                               .deleteDebt(debtId);
@@ -153,7 +157,7 @@ class DebtDetailPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
-                  'Historique des remboursements',
+                  localizations.historiqueDesRemboursements,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
@@ -177,6 +181,7 @@ class DebtDetailPage extends StatelessWidget {
   Widget _buildDetailCard(BuildContext context, Debt debt) {
     final currencyFormat = NumberFormat.currency(locale: 'fr_FR', symbol: 'Fcfa');
     final theme = Theme.of(context);
+    final localizations = AppLocalizations.of(context)!;
 
     return Card(
       child: Padding(
@@ -192,25 +197,25 @@ class DebtDetailPage extends StatelessWidget {
             const Divider(),
             _buildInfoRow(
               context,
-              'Montant total:',
+              localizations.montantTotalDeuxPoints,
               currencyFormat.format(debt.totalAmount),
             ),
             _buildInfoRow(
               context,
-              'Montant restant:',
+              localizations.montantRestantDeuxPoints,
               currencyFormat.format(debt.remainingAmount),
               highlight: true,
               color: debt.isOwedToMe ? AppColors.green : AppColors.red,
             ),
             _buildInfoRow(
               context,
-              'Date d\'échéance:',
+              localizations.dateEcheanceDeuxPoints,
               DateFormat('dd/MM/yyyy').format(debt.dueDate),
             ),
             _buildInfoRow(
               context,
-              'Statut:',
-              debt.isPaid ? 'Remboursé' : 'En cours',
+              localizations.statutDeuxPoints,
+              debt.isPaid ? localizations.rembourse : localizations.enCours,
               color: debt.isPaid ? AppColors.green : Colors.orangeAccent,
             ),
           ],
@@ -241,11 +246,12 @@ class DebtDetailPage extends StatelessWidget {
   }
 
   Widget _buildRepaymentsList(BuildContext context, Debt debt) {
+    final localizations = AppLocalizations.of(context)!;
     if (debt.repayments.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Text('Aucun remboursement pour le moment.'),
+          padding: const EdgeInsets.all(20.0),
+          child: Text(localizations.aucunRemboursementPourLeMoment),
         ),
       );
     }
@@ -271,11 +277,11 @@ class DebtDetailPage extends StatelessWidget {
                       showDialog(
                         context: ctx,
                         builder: (dCtx) => AlertDialog(
-                          title: const Text('Notes'),
+                          title: Text(localizations.notes),
                           content: Text(repayment.notes!),
                           actions: [
                             TextButton(
-                              child: const Text('Fermer'),
+                              child: Text(localizations.fermer),
                               onPressed: () => Navigator.of(dCtx).pop(),
                             )
                           ],
