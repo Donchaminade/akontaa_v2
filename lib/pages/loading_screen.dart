@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:akontaa/pages/home_page.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:provider/provider.dart';
+import 'package:akontaa/providers/debt_provider.dart';
 
 class LoadingScreen extends StatefulWidget {
   final Function(ThemeMode) changeTheme;
@@ -19,6 +21,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   _navigateToHome() async {
+    // Load debts before navigating to home page
+    await Provider.of<DebtProvider>(context, listen: false).loadDebts();
     await Future.delayed(const Duration(seconds: 5)); // 5-second simulation
     if (mounted) {
       Navigator.pushReplacement(
