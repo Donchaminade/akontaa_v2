@@ -1,4 +1,5 @@
 import 'package:akontaa/l10n/app_localizations.dart';
+import 'package:akontaa/pages/add_edit_debt_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/debt_provider.dart';
@@ -29,6 +30,14 @@ class OwedToMePage extends StatelessWidget {
               itemCount: owedToMeDebts.length,
               itemBuilder: (ctx, i) => DebtCard(debt: owedToMeDebts[i]),
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (ctx) => const AddEditDebtPage(isOwedToMe: true)),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

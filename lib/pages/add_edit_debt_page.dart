@@ -9,8 +9,9 @@ import 'package:intl/intl.dart';
 
 class AddEditDebtPage extends StatefulWidget {
   final Debt? debt;
+  final bool isOwedToMe;
 
-  const AddEditDebtPage({super.key, this.debt});
+  const AddEditDebtPage({super.key, this.debt, this.isOwedToMe = false});
 
   @override
   AddEditDebtPageState createState() => AddEditDebtPageState();
@@ -41,7 +42,7 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
       _totalAmount = 0.0;
       _description = '';
       _dueDate = DateTime.now();
-      _isOwedToMe = false; // Par défaut, c'est une dette que je dois
+      _isOwedToMe = widget.isOwedToMe; // Use the passed parameter
     }
     _dueDateController.text = DateFormat('dd/MM/yyyy').format(_dueDate);
   }

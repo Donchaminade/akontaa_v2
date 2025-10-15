@@ -1,4 +1,5 @@
 import 'package:akontaa/l10n/app_localizations.dart';
+import 'package:akontaa/pages/add_edit_debt_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,6 +31,14 @@ class MyDebtsPage extends StatelessWidget {
                 return DebtCard(debt: myDebts[index]);
               },
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (ctx) => const AddEditDebtPage()),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
