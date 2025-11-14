@@ -113,5 +113,18 @@
   },
   "echeance": "Due date",
   "remboursement": "Repayment",
-  "aucunRemboursementEnregistrePourCetteDette": "No repayment recorded for this debt."
+  "aucunRemboursementEnregistrePourCetteDette": "No repayment recorded for this debt.",
+  "evenements": "Events",
+  "aucunEvenementPourLeMoment": "No events yet.",
+  "coutTotal": "Total Cost",
+  "ajouterUnEvenement": "Add Event",
+  "modifierUnEvenement": "Edit Event",
+  "nomDeLEvenement": "Event Name",
+  "ajouterUnArticle": "Add Item",
+  "modifierUnArticle": "Edit Item",
+  "nomDeLArticle": "Item Name",
+  "cout": "Cost",
+  "veuillezEntrerUnCoutValide": "Please enter a valid cost.",
+  "aucunArticleDansCetEvenement": "No items in this event.",
+  "articles": "Articles"
 }

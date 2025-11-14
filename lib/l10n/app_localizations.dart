@@ -637,6 +637,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No repayment recorded for this debt.'**
   String get aucunRemboursementEnregistrePourCetteDette;
+
+  /// No description provided for @evenements.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get evenements;
+
+  /// No description provided for @aucunEvenementPourLeMoment.
+  ///
+  /// In en, this message translates to:
+  /// **'No events yet.'**
+  String get aucunEvenementPourLeMoment;
+
+  /// No description provided for @coutTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Cost'**
+  String get coutTotal;
+
+  /// No description provided for @ajouterUnEvenement.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Event'**
+  String get ajouterUnEvenement;
+
+  /// No description provided for @modifierUnEvenement.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Event'**
+  String get modifierUnEvenement;
+
+  /// No description provided for @nomDeLEvenement.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Name'**
+  String get nomDeLEvenement;
+
+  /// No description provided for @ajouterUnArticle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Item'**
+  String get ajouterUnArticle;
+
+  /// No description provided for @modifierUnArticle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Item'**
+  String get modifierUnArticle;
+
+  /// No description provided for @nomDeLArticle.
+  ///
+  /// In en, this message translates to:
+  /// **'Item Name'**
+  String get nomDeLArticle;
+
+  /// No description provided for @cout.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get cout;
+
+  /// No description provided for @veuillezEntrerUnCoutValide.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid cost.'**
+  String get veuillezEntrerUnCoutValide;
+
+  /// No description provided for @aucunArticleDansCetEvenement.
+  ///
+  /// In en, this message translates to:
+  /// **'No items in this event.'**
+  String get aucunArticleDansCetEvenement;
+
+  /// No description provided for @articles.
+  ///
+  /// In en, this message translates to:
+  /// **'Articles'**
+  String get articles;
 }
 
 class _AppLocalizationsDelegate

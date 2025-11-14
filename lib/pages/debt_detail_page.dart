@@ -27,7 +27,8 @@ class DebtDetailPage extends StatelessWidget {
       builder: (ctx) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
+          backgroundColor:
+              Theme.of(context).colorScheme.surface.withOpacity(0.7),
           title: Text(localizations.ajouterUnRemboursement),
           content: Form(
             key: formKey,
@@ -45,7 +46,8 @@ class DebtDetailPage extends StatelessWidget {
                       return localizations.montantInvalide;
                     }
                     if (double.parse(value) > debt.remainingAmount) {
-                      return localizations.leMontantNePeutPasDepasserLeSoldeRestantSimple;
+                      return localizations
+                          .leMontantNePeutPasDepasserLeSoldeRestantSimple;
                     }
                     return null;
                   },
@@ -53,7 +55,8 @@ class DebtDetailPage extends StatelessWidget {
                 const SizedBox(height: 10),
                 TextFormField(
                   controller: notesController,
-                  decoration: InputDecoration(labelText: localizations.notesOptionnel),
+                  decoration:
+                      InputDecoration(labelText: localizations.notesOptionnel),
                 ),
               ],
             ),
@@ -119,7 +122,8 @@ class DebtDetailPage extends StatelessWidget {
                 builder: (ctx) => BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                   child: AlertDialog(
-                    backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.surface.withOpacity(0.7),
                     title: Text(localizations.confirmerLaSuppression),
                     content: Text(
                         localizations.etesVousSurDeVouloirSupprimerCetteDette),
@@ -129,7 +133,9 @@ class DebtDetailPage extends StatelessWidget {
                         onPressed: () => Navigator.of(ctx).pop(),
                       ),
                       TextButton(
-                        child: Text(localizations.supprimer, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                        child: Text(localizations.supprimer,
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.error)),
                         onPressed: () {
                           Provider.of<DebtProvider>(context, listen: false)
                               .deleteDebt(debtId);
@@ -170,8 +176,11 @@ class DebtDetailPage extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 80.0),
         child: FloatingActionButton(
-          onPressed: debt.isPaid ? null : () => _showAddRepaymentDialog(context, debt),
-          backgroundColor: debt.isPaid ? Colors.grey : Theme.of(context).colorScheme.secondary,
+          onPressed:
+              debt.isPaid ? null : () => _showAddRepaymentDialog(context, debt),
+          backgroundColor: debt.isPaid
+              ? Colors.grey
+              : Theme.of(context).colorScheme.secondary,
           child: const Icon(Icons.add),
         ),
       ),
@@ -179,7 +188,8 @@ class DebtDetailPage extends StatelessWidget {
   }
 
   Widget _buildDetailCard(BuildContext context, Debt debt) {
-    final currencyFormat = NumberFormat.currency(locale: 'fr_FR', symbol: 'Fcfa');
+    final currencyFormat =
+        NumberFormat.currency(locale: 'fr_FR', symbol: 'Fcfa');
     final theme = Theme.of(context);
     final localizations = AppLocalizations.of(context)!;
 
@@ -256,7 +266,8 @@ class DebtDetailPage extends StatelessWidget {
       );
     }
 
-    final currencyFormat = NumberFormat.currency(locale: 'fr_FR', symbol: 'Fcfa');
+    final currencyFormat =
+        NumberFormat.currency(locale: 'fr_FR', symbol: 'Fcfa');
 
     return ListView.builder(
       shrinkWrap: true,

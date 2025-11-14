@@ -293,4 +293,43 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aucunRemboursementEnregistrePourCetteDette =>
       'No repayment recorded for this debt.';
+
+  @override
+  String get evenements => 'Events';
+
+  @override
+  String get aucunEvenementPourLeMoment => 'No events yet.';
+
+  @override
+  String get coutTotal => 'Total Cost';
+
+  @override
+  String get ajouterUnEvenement => 'Add Event';
+
+  @override
+  String get modifierUnEvenement => 'Edit Event';
+
+  @override
+  String get nomDeLEvenement => 'Event Name';
+
+  @override
+  String get ajouterUnArticle => 'Add Item';
+
+  @override
+  String get modifierUnArticle => 'Edit Item';
+
+  @override
+  String get nomDeLArticle => 'Item Name';
+
+  @override
+  String get cout => 'Cost';
+
+  @override
+  String get veuillezEntrerUnCoutValide => 'Please enter a valid cost.';
+
+  @override
+  String get aucunArticleDansCetEvenement => 'No items in this event.';
+
+  @override
+  String get articles => 'Articles';
 }

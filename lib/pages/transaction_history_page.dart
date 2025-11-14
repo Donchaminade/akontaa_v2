@@ -9,7 +9,8 @@ import 'package:printing/printing.dart';
 
 import '../models/debt.dart';
 import '../models/repayment.dart';
-import '../models/transaction.dart' as app_transaction; // Alias to avoid conflict with flutter's Transaction
+import '../models/transaction.dart'
+    as app_transaction; // Alias to avoid conflict with flutter's Transaction
 import '../app_colors.dart'; // Import AppColors
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -25,7 +26,8 @@ class TransactionHistoryPage extends StatefulWidget {
 class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
   _DebtFilter _selectedFilter = _DebtFilter.myDebts;
 
-  Future<void> _generatePdf(BuildContext context, List<app_transaction.Transaction> transactions) async {
+  Future<void> _generatePdf(BuildContext context,
+      List<app_transaction.Transaction> transactions) async {
     final pdf = pw.Document();
     final localizations = AppLocalizations.of(context)!;
 
@@ -45,27 +47,37 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
               return pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text(localizations.typeDette, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text(localizations.typeDette,
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                   pw.Text('  ${localizations.personne}: ${debt.personName}'),
-                  pw.Text('  ${localizations.description}: ${debt.description}'),
-                  pw.Text('  ${localizations.montantTotal}: ${debt.totalAmount} Fcfa'),
-                  pw.Text('  ${localizations.dateEcheance}: ${DateFormat.yMd().format(debt.dueDate)}'),
-                  pw.Text('  Statut: ${debt.isPaid ? localizations.rembourse : localizations.enCours}'),
+                  pw.Text(
+                      '  ${localizations.description}: ${debt.description}'),
+                  pw.Text(
+                      '  ${localizations.montantTotal}: ${debt.totalAmount} Fcfa'),
+                  pw.Text(
+                      '  ${localizations.dateEcheance}: ${DateFormat.yMd().format(debt.dueDate)}'),
+                  pw.Text(
+                      '  Statut: ${debt.isPaid ? localizations.rembourse : localizations.enCours}'),
                   pw.Divider(),
                 ],
               );
             } else {
               final repayment = transaction.item as Repayment;
-              final debtProvider = Provider.of<DebtProvider>(context, listen: false);
-              final debt = debtProvider.debts.firstWhere((d) => d.repayments.contains(repayment));
+              final debtProvider =
+                  Provider.of<DebtProvider>(context, listen: false);
+              final debt = debtProvider.debts
+                  .firstWhere((d) => d.repayments.contains(repayment));
               return pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text(localizations.typeRemboursement, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text(localizations.typeRemboursement,
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                   pw.Text('  ${localizations.aDe}: ${debt.personName}'),
-                  pw.Text('  ${localizations.montant}: ${repayment.amount} Fcfa'),
+                  pw.Text(
+                      '  ${localizations.montant}: ${repayment.amount} Fcfa'),
                   pw.Text('  Date: ${DateFormat.yMd().format(repayment.date)}'),
-                  pw.Text('  ${localizations.notesPreuve}: ${repayment.notes ?? localizations.aucune}'), // Updated label
+                  pw.Text(
+                      '  ${localizations.notesPreuve}: ${repayment.notes ?? localizations.aucune}'), // Updated label
                   pw.Divider(),
                 ],
               );
@@ -75,7 +87,8 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
       ),
     );
 
-    await Printing.sharePdf(bytes: await pdf.save(), filename: 'transaction_history.pdf');
+    await Printing.sharePdf(
+        bytes: await pdf.save(), filename: 'transaction_history.pdf');
   }
 
   void _printTransactions(BuildContext context) async {
@@ -126,20 +139,26 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
 
     List<app_transaction.Transaction> filteredTransactions = [];
     if (filterOption == 'myDebts') {
-      filteredTransactions =
-          allTransactions.where((t) => t.type == app_transaction.TransactionType.debt && !(t.item as Debt).isOwedToMe) // Filter for my debts
-              .toList();
+      filteredTransactions = allTransactions
+          .where((t) =>
+              t.type == app_transaction.TransactionType.debt &&
+              !(t.item as Debt).isOwedToMe) // Filter for my debts
+          .toList();
     } else if (filterOption == 'owedToMe') {
-      filteredTransactions =
-          allTransactions.where((t) => t.type == app_transaction.TransactionType.debt && (t.item as Debt).isOwedToMe) // Filter for owed to me
-              .toList();
+      filteredTransactions = allTransactions
+          .where((t) =>
+              t.type == app_transaction.TransactionType.debt &&
+              (t.item as Debt).isOwedToMe) // Filter for owed to me
+          .toList();
     } else {
       filteredTransactions = allTransactions; // All transactions
     }
 
     if (filteredTransactions.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(localizations.aucuneTransactionCorrespondanteAImprimer)),
+        SnackBar(
+            content:
+                Text(localizations.aucuneTransactionCorrespondanteAImprimer)),
       );
       return;
     }
@@ -185,17 +204,20 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
             child: Center(
               child: SegmentedButton<_DebtFilter>(
                 segments: <ButtonSegment<_DebtFilter>>[
                   ButtonSegment<_DebtFilter>(
                     value: _DebtFilter.myDebts,
-                    label: Text(localizations.dettes, style: TextStyle(fontSize: 16)),
+                    label: Text(localizations.dettes,
+                        style: TextStyle(fontSize: 16)),
                   ),
                   ButtonSegment<_DebtFilter>(
                     value: _DebtFilter.owedToMe,
-                    label: Text(localizations.onMeDoit, style: TextStyle(fontSize: 16)),
+                    label: Text(localizations.onMeDoit,
+                        style: TextStyle(fontSize: 16)),
                   ),
                 ],
                 selected: <_DebtFilter>{_selectedFilter},
@@ -205,7 +227,8 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                   });
                 },
                 style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(const Size(150, 70)), // Make buttons larger
+                  minimumSize: MaterialStateProperty.all(
+                      const Size(150, 70)), // Make buttons larger
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {
                       if (states.contains(MaterialState.selected)) {
@@ -235,7 +258,9 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          _selectedFilter == _DebtFilter.myDebts ? Icons.money_off : Icons.attach_money,
+                          _selectedFilter == _DebtFilter.myDebts
+                              ? Icons.money_off
+                              : Icons.attach_money,
                           size: 60,
                           color: Colors.grey[400],
                         ),
@@ -244,7 +269,8 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                           _selectedFilter == _DebtFilter.myDebts
                               ? localizations.aucuneDetteAAfficher
                               : localizations.personneNeVousDoitDArgent,
-                          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.grey[600]),
                         ),
                       ],
                     ),
@@ -269,18 +295,27 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                         }
                       }
 
-                      double repaymentProgress = totalDebtAmount > 0 ? (totalRepaid / totalDebtAmount).clamp(0.0, 1.0) : 0.0;
+                      double repaymentProgress = totalDebtAmount > 0
+                          ? (totalRepaid / totalDebtAmount).clamp(0.0, 1.0)
+                          : 0.0;
 
                       return Card(
-                        margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 8.0),
                         elevation: 2,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
                         child: ExpansionTile(
                           leading: CircleAvatar(
-                            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
-                            child: Text(personName[0].toUpperCase(), style: TextStyle(color: Theme.of(context).primaryColor)),
+                            backgroundColor:
+                                Theme.of(context).primaryColor.withOpacity(0.2),
+                            child: Text(personName[0].toUpperCase(),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor)),
                           ),
-                          title: Text(personName, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          title: Text(personName,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -292,7 +327,9 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                               LinearProgressIndicator(
                                 value: repaymentProgress,
                                 backgroundColor: Colors.grey[300],
-                                color: _selectedFilter == _DebtFilter.myDebts ? Colors.red.withOpacity(0.7) : Colors.green.withOpacity(0.7),
+                                color: _selectedFilter == _DebtFilter.myDebts
+                                    ? Colors.red.withOpacity(0.7)
+                                    : Colors.green.withOpacity(0.7),
                                 minHeight: 5,
                                 borderRadius: BorderRadius.circular(5),
                               ),
@@ -302,49 +339,65 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                allPaid ? localizations.solde : localizations.enCours,
+                                allPaid
+                                    ? localizations.solde
+                                    : localizations.enCours,
                                 style: TextStyle(
                                   color: allPaid ? Colors.green : Colors.orange,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              if (!allPaid && _selectedFilter == _DebtFilter.myDebts)
+                              if (!allPaid &&
+                                  _selectedFilter == _DebtFilter.myDebts)
                                 Text(
                                   '${localizations.reste}: ${(totalDebtAmount - totalRepaid).toStringAsFixed(0)} Fcfa',
-                                  style: const TextStyle(color: Colors.red, fontSize: 12),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12),
                                 ),
-                              if (!allPaid && _selectedFilter == _DebtFilter.owedToMe)
+                              if (!allPaid &&
+                                  _selectedFilter == _DebtFilter.owedToMe)
                                 Text(
                                   '${localizations.reste}: ${(totalDebtAmount - totalRepaid).toStringAsFixed(0)} Fcfa',
-                                  style: const TextStyle(color: Colors.green, fontSize: 12),
+                                  style: const TextStyle(
+                                      color: Colors.green, fontSize: 12),
                                 ),
                             ],
                           ),
                           children: debtsOfPerson.expand((debt) {
                             return [
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 4.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      localizations.detteDescription(debt.description, debt.totalAmount.toStringAsFixed(0)),
-                                      style: const TextStyle(fontWeight: FontWeight.w600),
+                                      localizations.detteDescription(
+                                          debt.description,
+                                          debt.totalAmount.toStringAsFixed(0)),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600),
                                     ),
                                     Text(
                                       '${localizations.echeance}: ${DateFormat.yMd().format(debt.dueDate)}',
-                                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                                      style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 12),
                                     ),
                                     ...debt.repayments.map((repayment) {
                                       return Padding(
-                                        padding: const EdgeInsets.only(left: 16.0, top: 4.0),
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0, top: 4.0),
                                         child: Row(
                                           children: [
-                                            Icon(Icons.check_circle, color: Colors.green[400], size: 16),
+                                            Icon(Icons.check_circle,
+                                                color: Colors.green[400],
+                                                size: 16),
                                             const SizedBox(width: 8),
                                             Text(
                                               '${localizations.remboursement}: ${repayment.amount.toStringAsFixed(0)} Fcfa le ${DateFormat.yMd().format(repayment.date)}',
-                                              style: TextStyle(color: Colors.grey[800]),
+                                              style: TextStyle(
+                                                  color: Colors.grey[800]),
                                             ),
                                           ],
                                         ),
@@ -352,8 +405,14 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                                     }).toList(),
                                     if (debt.repayments.isEmpty)
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 16.0, top: 4.0),
-                                        child: Text(localizations.aucunRemboursementEnregistrePourCetteDette, style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0, top: 4.0),
+                                        child: Text(
+                                            localizations
+                                                .aucunRemboursementEnregistrePourCetteDette,
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic,
+                                                color: Colors.grey)),
                                       ),
                                     const Divider(height: 16, thickness: 1),
                                   ],

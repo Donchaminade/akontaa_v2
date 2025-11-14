@@ -113,5 +113,18 @@
   },
   "echeance": "Échéance",
   "remboursement": "Remboursement",
-  "aucunRemboursementEnregistrePourCetteDette": "Aucun remboursement enregistré pour cette dette."
+  "aucunRemboursementEnregistrePourCetteDette": "Aucun remboursement enregistré pour cette dette.",
+  "evenements": "Événements",
+  "aucunEvenementPourLeMoment": "Aucun événement pour le moment.",
+  "coutTotal": "Coût Total",
+  "ajouterUnEvenement": "Ajouter un événement",
+  "modifierUnEvenement": "Modifier l'événement",
+  "nomDeLEvenement": "Nom de l'événement",
+  "ajouterUnArticle": "Ajouter un article",
+  "modifierUnArticle": "Modifier l'article",
+  "nomDeLArticle": "Nom de l'article",
+  "cout": "Coût",
+  "veuillezEntrerUnCoutValide": "Veuillez entrer un coût valide.",
+  "aucunArticleDansCetEvenement": "Aucun article dans cet événement.",
+  "articles": "Articles"
 }

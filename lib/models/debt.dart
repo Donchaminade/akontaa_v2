@@ -6,7 +6,8 @@ class Debt {
   double totalAmount;
   String description;
   DateTime dueDate;
-  bool isOwedToMe; // true si on me doit de l'argent, false si je dois de l'argent
+  bool
+      isOwedToMe; // true si on me doit de l'argent, false si je dois de l'argent
   List<Repayment> repayments;
 
   Debt({

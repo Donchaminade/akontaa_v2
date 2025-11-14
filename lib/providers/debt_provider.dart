@@ -40,9 +40,13 @@ class DebtProvider with ChangeNotifier {
   List<Transaction> get recentTransactions {
     final List<Transaction> transactions = [];
     for (final debt in _debts) {
-      transactions.add(Transaction(item: debt, type: TransactionType.debt, date: debt.dueDate));
+      transactions.add(Transaction(
+          item: debt, type: TransactionType.debt, date: debt.dueDate));
       for (final repayment in debt.repayments) {
-        transactions.add(Transaction(item: repayment, type: TransactionType.repayment, date: repayment.date));
+        transactions.add(Transaction(
+            item: repayment,
+            type: TransactionType.repayment,
+            date: repayment.date));
       }
     }
     transactions.sort((a, b) => b.date.compareTo(a.date));
@@ -52,12 +56,17 @@ class DebtProvider with ChangeNotifier {
   List<Transaction> get allTransactions {
     final List<Transaction> transactions = [];
     for (final debt in _debts) {
-      transactions.add(Transaction(item: debt, type: TransactionType.debt, date: debt.dueDate));
+      transactions.add(Transaction(
+          item: debt, type: TransactionType.debt, date: debt.dueDate));
       for (final repayment in debt.repayments) {
-        transactions.add(Transaction(item: repayment, type: TransactionType.repayment, date: repayment.date));
+        transactions.add(Transaction(
+            item: repayment,
+            type: TransactionType.repayment,
+            date: repayment.date));
       }
     }
-    transactions.sort((a, b) => b.date.compareTo(a.date)); // Sort by date, newest first
+    transactions
+        .sort((a, b) => b.date.compareTo(a.date)); // Sort by date, newest first
     return transactions;
   }
 

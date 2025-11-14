@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:akontaa/app_colors.dart';
 import 'package:akontaa/l10n/app_localizations.dart';
 import 'package:akontaa/pages/dashboard_page.dart';
+import 'package:akontaa/pages/events_list_page.dart';
 import 'package:akontaa/pages/my_debts_page.dart';
 import 'package:akontaa/pages/owed_to_me_page.dart';
 import 'package:akontaa/pages/transaction_history_page.dart';
@@ -14,7 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomePage extends StatefulWidget {
   final bool showOnboarding;
   final Function(ThemeMode) changeTheme;
-  const HomePage({super.key, this.showOnboarding = false, required this.changeTheme});
+  const HomePage(
+      {super.key, this.showOnboarding = false, required this.changeTheme});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -29,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey _myDebtsNavItemKey = GlobalKey();
   final GlobalKey _owedToMeNavItemKey = GlobalKey();
   final GlobalKey _paymentsNavItemKey = GlobalKey();
+  final GlobalKey _eventsNavItemKey = GlobalKey();
 
   late List<Widget> _pages;
   late List<String> _pageTitles;
@@ -42,12 +45,14 @@ class _HomePageState extends State<HomePage> {
       const MyDebtsPage(),
       const OwedToMePage(),
       const TransactionHistoryPage(),
+      const EventsListPage(),
     ];
     _pageTitles = [
       localizations.tableauDeBord,
       localizations.mesDettes,
       localizations.onMeDoit,
       localizations.paiementsParPersonne,
+      "Événements", // TODO: Localize
     ];
   }
 
@@ -273,7 +278,8 @@ class _HomePageState extends State<HomePage> {
       ),
     );
 
-    TutorialCoachMark(targets: targets, 
+    TutorialCoachMark(
+      targets: targets,
       colorShadow: Colors.black,
       textSkip: localizations.passer,
       paddingFocus: 10,
@@ -303,7 +309,9 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (ctx) => SettingsPage(changeTheme: widget.changeTheme)),
+                MaterialPageRoute(
+                    builder: (ctx) =>
+                        SettingsPage(changeTheme: widget.changeTheme)),
               );
             },
           ),
@@ -325,20 +333,42 @@ class _HomePageState extends State<HomePage> {
             child: BottomNavigationBar(
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: Icon(_selectedIndex == 0 ? Icons.dashboard_rounded : Icons.dashboard_outlined, key: _dashboardNavItemKey),
+                  icon: Icon(
+                      _selectedIndex == 0
+                          ? Icons.dashboard_rounded
+                          : Icons.dashboard_outlined,
+                      key: _dashboardNavItemKey),
                   label: localizations.dash,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(_selectedIndex == 1 ? Icons.arrow_upward_rounded : Icons.arrow_upward_outlined, key: _myDebtsNavItemKey),
+                  icon: Icon(
+                      _selectedIndex == 1
+                          ? Icons.arrow_upward_rounded
+                          : Icons.arrow_upward_outlined,
+                      key: _myDebtsNavItemKey),
                   label: localizations.mesDettes,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(_selectedIndex == 2 ? Icons.arrow_downward_rounded : Icons.arrow_downward_outlined, key: _owedToMeNavItemKey),
+                  icon: Icon(
+                      _selectedIndex == 2
+                          ? Icons.arrow_downward_rounded
+                          : Icons.arrow_downward_outlined,
+                      key: _owedToMeNavItemKey),
                   label: localizations.onMeDoit,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(_selectedIndex == 3 ? Icons.people_alt : Icons.people_outline, key: _paymentsNavItemKey),
+                  icon: Icon(
+                      _selectedIndex == 3
+                          ? Icons.people_alt
+                          : Icons.people_outline,
+                      key: _paymentsNavItemKey),
                   label: localizations.paiements,
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                      _selectedIndex == 4 ? Icons.event : Icons.event_outlined,
+                      key: _eventsNavItemKey),
+                  label: "Événements", // TODO: Localize
                 ),
               ],
               currentIndex: _selectedIndex,

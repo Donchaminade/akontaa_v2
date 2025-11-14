@@ -21,7 +21,8 @@ class AddRepaymentPage extends StatelessWidget {
       ),
       body: Consumer<DebtProvider>(
         builder: (context, debtProvider, child) {
-          final myDebts = debtProvider.myDebts.where((debt) => !debt.isPaid).toList();
+          final myDebts =
+              debtProvider.myDebts.where((debt) => !debt.isPaid).toList();
 
           if (myDebts.isEmpty) {
             return Center(
@@ -38,11 +39,13 @@ class AddRepaymentPage extends StatelessWidget {
             itemBuilder: (ctx, i) {
               final debt = myDebts[i];
               return Card(
-                margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: ListTile(
                   title: Text(debt.personName),
                   subtitle: Text(debt.description),
-                  trailing: Text('${debt.remainingAmount.toStringAsFixed(2)} Fcfa'),
+                  trailing:
+                      Text('${debt.remainingAmount.toStringAsFixed(2)} Fcfa'),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(

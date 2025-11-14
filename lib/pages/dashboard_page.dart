@@ -22,7 +22,8 @@ class DashboardPage extends StatefulWidget {
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> with SingleTickerProviderStateMixin {
+class _DashboardPageState extends State<DashboardPage>
+    with SingleTickerProviderStateMixin {
   final PageController _pageController = PageController(viewportFraction: 0.85);
   int _currentPage = 0;
 
@@ -89,14 +90,17 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
                 child: PageView(
                   controller: _pageController,
                   children: [
-                    _buildSummaryCard(context, localizations.onMeDoit, totalOwedToMe, AppColors.green),
-                    _buildSummaryCard(context, localizations.mesDettes, totalMyDebts, AppColors.red),
+                    _buildSummaryCard(context, localizations.onMeDoit,
+                        totalOwedToMe, AppColors.green),
+                    _buildSummaryCard(context, localizations.mesDettes,
+                        totalMyDebts, AppColors.red),
                   ],
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(2, (index) => _buildDot(index, context)),
+                children:
+                    List.generate(2, (index) => _buildDot(index, context)),
               ),
               const SizedBox(height: 24),
               Padding(
@@ -104,19 +108,25 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildQuickAction(context, Icons.add, localizations.ajouter, () {
+                    _buildQuickAction(context, Icons.add, localizations.ajouter,
+                        () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) => const AddEditDebtPage()),
+                        MaterialPageRoute(
+                            builder: (ctx) => const AddEditDebtPage()),
                       );
                     }),
-                    _buildQuickAction(context, Icons.payment, localizations.rembourser, () {
+                    _buildQuickAction(
+                        context, Icons.payment, localizations.rembourser, () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) => const AddRepaymentPage()),
+                        MaterialPageRoute(
+                            builder: (ctx) => const AddRepaymentPage()),
                       );
                     }),
-                    _buildQuickAction(context, Icons.history, localizations.historique, () {
+                    _buildQuickAction(
+                        context, Icons.history, localizations.historique, () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) => const TransactionHistoryPage()),
+                        MaterialPageRoute(
+                            builder: (ctx) => const TransactionHistoryPage()),
                       );
                     }),
                   ],
@@ -125,7 +135,9 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
               const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(localizations.fluxDesDettesEtRemboursements, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                child: Text(localizations.fluxDesDettesEtRemboursements,
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 16),
               const SizedBox(
@@ -135,7 +147,9 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
               const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(localizations.activiteRecente, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                child: Text(localizations.activiteRecente,
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 16),
               if (recentTransactions.isEmpty)
@@ -164,13 +178,16 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
       height: 8,
       width: _currentPage == index ? 24 : 8,
       decoration: BoxDecoration(
-        color: _currentPage == index ? Theme.of(context).colorScheme.secondary : Colors.grey,
+        color: _currentPage == index
+            ? Theme.of(context).colorScheme.secondary
+            : Colors.grey,
         borderRadius: BorderRadius.circular(4),
       ),
     );
   }
 
-  Widget _buildSummaryCard(BuildContext context, String title, double amount, Color color) {
+  Widget _buildSummaryCard(
+      BuildContext context, String title, double amount, Color color) {
     IconData icon = Icons.info_outline; // Default icon
     if (title == AppLocalizations.of(context)!.onMeDoit) {
       icon = Icons.arrow_upward;
@@ -209,11 +226,18 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                    Text(title,
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
                     const SizedBox(height: 8),
                     TypingAnimation(
                       text: '${amount.toStringAsFixed(2)} Fcfa',
-                      style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: const TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ],
                 ),
@@ -246,7 +270,8 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
     );
   }
 
-  Widget _buildQuickAction(BuildContext context, IconData icon, String label, VoidCallback onTap) {
+  Widget _buildQuickAction(
+      BuildContext context, IconData icon, String label, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -268,21 +293,32 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
     if (transaction.type == TransactionType.debt) {
       final debt = transaction.item as Debt;
       return ListTile(
-        leading: CircleAvatar(backgroundColor: debt.isOwedToMe ? AppColors.green.withOpacity(0.2) : AppColors.red.withOpacity(0.2), child: Icon(Icons.arrow_downward, color: debt.isOwedToMe ? AppColors.green : AppColors.red)),
+        leading: CircleAvatar(
+            backgroundColor: debt.isOwedToMe
+                ? AppColors.green.withOpacity(0.2)
+                : AppColors.red.withOpacity(0.2),
+            child: Icon(Icons.arrow_downward,
+                color: debt.isOwedToMe ? AppColors.green : AppColors.red)),
         title: Text(debt.personName),
         subtitle: Text(debt.description),
-        trailing: Text('${debt.totalAmount} Fcfa', style: TextStyle(color: debt.isOwedToMe ? AppColors.green : AppColors.red)),
+        trailing: Text('${debt.totalAmount} Fcfa',
+            style: TextStyle(
+                color: debt.isOwedToMe ? AppColors.green : AppColors.red)),
       );
     } else {
       final repayment = transaction.item as Repayment;
       // Find the debt this repayment belongs to
       final debtProvider = Provider.of<DebtProvider>(context, listen: false);
-      final debt = debtProvider.debts.firstWhere((d) => d.repayments.contains(repayment));
+      final debt = debtProvider.debts
+          .firstWhere((d) => d.repayments.contains(repayment));
       return ListTile(
-        leading: CircleAvatar(backgroundColor: Colors.blue.withOpacity(0.2), child: const Icon(Icons.arrow_upward, color: Colors.blue)),
+        leading: CircleAvatar(
+            backgroundColor: Colors.blue.withOpacity(0.2),
+            child: const Icon(Icons.arrow_upward, color: Colors.blue)),
         title: Text('Remboursement à ${debt.personName}'),
         subtitle: Text(repayment.notes ?? 'Pas de notes'),
-        trailing: Text('${repayment.amount} Fcfa', style: const TextStyle(color: Colors.blue)),
+        trailing: Text('${repayment.amount} Fcfa',
+            style: const TextStyle(color: Colors.blue)),
       );
     }
   }

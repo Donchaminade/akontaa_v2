@@ -1,7 +1,6 @@
-import 'package:akontaa/pages/home_page.dart';
+import 'dart:math';
 import 'package:akontaa/pages/loading_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   final Function(ThemeMode) changeTheme;
@@ -12,65 +11,87 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
+class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+  late AnimationController _fadeController;
+  late AnimationController _rotationController;
   late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+
+    _fadeController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
 
-    _animationController.forward().whenComplete(() {
-      _checkOnboardingAndNavigate();
-    });
+    _rotationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat();
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_fadeController);
+
+    _fadeController.forward();
+
+    _navigateToHome();
   }
 
-  _checkOnboardingAndNavigate() async {
-    final prefs = await SharedPreferences.getInstance();
-    final bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
-
-    await Future.delayed(const Duration(seconds: 1)); // Original delay for effect
-
+  _navigateToHome() async {
+    await Future.delayed(const Duration(seconds: 15));
     if (mounted) {
-      if (hasSeenOnboarding) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoadingScreen(changeTheme: widget.changeTheme)),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoadingScreen(changeTheme: widget.changeTheme)),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoadingScreen(changeTheme: widget.changeTheme),
+        ),
+      );
     }
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _fadeController.dispose();
+    _rotationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor, // Use app's primary color
+      backgroundColor: Colors.grey[900]!,
       body: Center(
         child: FadeTransition(
           opacity: _fadeAnimation,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/logoak.png',
-                width: 150, // Adjust size as needed
-                height: 150, // Adjust size as needed
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  RotationTransition(
+                    turns: _rotationController,
+                    child: CustomPaint(
+                      painter: BorderArcPainter(),
+                      child: const SizedBox(
+                        width: 170,
+                        height: 170,
+                      ),
+                    ),
+                  ),
+                  CircleAvatar(
+                    radius: 75,
+                    backgroundColor: Colors.transparent,
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/logoak.png',
+                        width: 150,
+                        height: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               Text(
@@ -83,7 +104,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               ),
               const SizedBox(height: 10),
               Text(
-                'Your Personal Debt Manager',
+                'Vos finances simplifiées',
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.white70,
@@ -94,5 +115,27 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         ),
       ),
     );
+  }
+}
+
+class BorderArcPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.green
+      ..strokeWidth = 6
+      ..style = PaintingStyle.stroke;
+
+    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+
+    // Arc de gauche
+    canvas.drawArc(rect, pi * 0.75, pi * 0.5, false, paint);
+    // Arc de droite
+    canvas.drawArc(rect, -pi * 0.25, pi * 0.5, false, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }

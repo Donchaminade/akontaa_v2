@@ -22,13 +22,13 @@ class AnimatedBackgroundState extends State<AnimatedBackground>
     )..repeat(reverse: true);
 
     _colorAnimation1 = ColorTween(
-      begin: Colors.deepPurple[900],
+      begin: Colors.grey[700]!,
       end: const Color.fromARGB(255, 49, 47, 47),
     ).animate(_controller);
 
     _colorAnimation2 = ColorTween(
       begin: const Color(0xFF0D1B2A),
-      end: Colors.deepPurple.shade800.withOpacity(0.8),
+      end: Colors.grey[700]!.withOpacity(0.8),
     ).animate(_controller);
   }
 

@@ -13,16 +13,19 @@ class DebtCard extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    final currencyFormat = NumberFormat.currency(locale: 'fr_FR', symbol: 'Fcfa');
+    final currencyFormat =
+        NumberFormat.currency(locale: 'fr_FR', symbol: 'Fcfa');
     final remainingAmount = debt.remainingAmount;
     final isOverdue = !debt.isPaid && debt.dueDate.isBefore(DateTime.now());
 
-    final Color amountColor = debt.isOwedToMe ? colorScheme.secondary : colorScheme.error;
+    final Color amountColor =
+        debt.isOwedToMe ? colorScheme.secondary : colorScheme.error;
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
         leading: CircleAvatar(
           backgroundColor: amountColor.withOpacity(0.15),
           child: Icon(
@@ -33,7 +36,8 @@ class DebtCard extends StatelessWidget {
         ),
         title: Text(
           debt.personName,
-          style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleMedium
+              ?.copyWith(fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
           debt.description,
@@ -60,7 +64,10 @@ class DebtCard extends StatelessWidget {
                 ),
                 child: const Text(
                   'En retard',
-                  style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
           ],

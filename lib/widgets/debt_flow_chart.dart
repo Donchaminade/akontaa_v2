@@ -37,7 +37,8 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
 
     if (firstTransactionDate != null && lastTransactionDate != null) {
       // Données cumulées mensuelles
-      DateTime currentMonth = DateTime(firstTransactionDate.year, firstTransactionDate.month, 1);
+      DateTime currentMonth =
+          DateTime(firstTransactionDate.year, firstTransactionDate.month, 1);
       double cumulativeOwedToMe = 0;
       double cumulativeMyDebts = 0;
 
@@ -48,7 +49,8 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
 
         // Calcul des montants mensuels
         for (var transaction in allTransactions.where((t) =>
-            t.date.year == currentMonth.year && t.date.month == currentMonth.month)) {
+            t.date.year == currentMonth.year &&
+            t.date.month == currentMonth.month)) {
           if (transaction.type == TransactionType.debt) {
             final debt = transaction.item as Debt;
             if (debt.isOwedToMe) {
@@ -71,7 +73,8 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
         cumulativeOwedToMe += monthOwedToMeChange;
         cumulativeMyDebts += monthMyDebtsChange;
 
-        chartData.add(_ChartDataPoint(currentMonth, cumulativeOwedToMe, cumulativeMyDebts));
+        chartData.add(_ChartDataPoint(
+            currentMonth, cumulativeOwedToMe, cumulativeMyDebts));
 
         currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
       }
@@ -81,9 +84,9 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
       for (var transaction in allTransactions) {
         if (transaction.type == TransactionType.repayment) {
           final repayment = transaction.item as Repayment;
-          final weekStartDate =
-              transaction.date.subtract(Duration(days: transaction.date.weekday - 1));
-          final weekKey = 
+          final weekStartDate = transaction.date
+              .subtract(Duration(days: transaction.date.weekday - 1));
+          final weekKey =
               '${weekStartDate.year}-${weekStartDate.month.toString().padLeft(2, '0')}-${weekStartDate.day.toString().padLeft(2, '0')}';
           weeklyRepaymentTotals.update(
             weekKey,
@@ -96,8 +99,8 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
       final sortedWeekKeys = weeklyRepaymentTotals.keys.toList()..sort();
       for (final weekKey in sortedWeekKeys) {
         final parts = weekKey.split('-');
-        final weekStartDate = 
-            DateTime(int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
+        final weekStartDate = DateTime(
+            int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
         weeklyRepaymentData.add(
             _ChartDataPoint(weekStartDate, weeklyRepaymentTotals[weekKey]!, 0));
       }
@@ -148,7 +151,8 @@ class _DebtFlowChartState extends State<DebtFlowChart> {
         SplineSeries<_ChartDataPoint, DateTime>(
           dataSource: weeklyRepaymentData,
           xValueMapper: (data, _) => data.month,
-          yValueMapper: (data, _) => data.owedToMe, // utilisé pour le total hebdo
+          yValueMapper: (data, _) =>
+              data.owedToMe, // utilisé pour le total hebdo
           name: 'Remboursements (hebdo)',
           color: Colors.blueAccent,
           width: 3,

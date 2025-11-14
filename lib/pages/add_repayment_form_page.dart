@@ -1,4 +1,3 @@
-
 import 'package:akontaa/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -72,18 +71,23 @@ class _AddRepaymentFormPageState extends State<AddRepaymentFormPage> {
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   elevation: 8,
                   shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
                       controller: _amountController,
                       decoration: InputDecoration(
                         labelText: localizations.montantDuRemboursement,
-                        prefixIcon: Icon(Icons.attach_money, color: Theme.of(context).colorScheme.secondary),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: Icon(Icons.attach_money,
+                            color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 2),
                         ),
                       ),
                       keyboardType: TextInputType.number,
@@ -94,7 +98,10 @@ class _AddRepaymentFormPageState extends State<AddRepaymentFormPage> {
                           return localizations.montantInvalide;
                         }
                         if (double.parse(value) > widget.debt.remainingAmount) {
-                          return localizations.leMontantNePeutPasDepasserLeSoldeRestant(widget.debt.remainingAmount.toStringAsFixed(2));
+                          return localizations
+                              .leMontantNePeutPasDepasserLeSoldeRestant(widget
+                                  .debt.remainingAmount
+                                  .toStringAsFixed(2));
                         }
                         return null;
                       },
@@ -105,18 +112,23 @@ class _AddRepaymentFormPageState extends State<AddRepaymentFormPage> {
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   elevation: 8,
                   shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
                       controller: _notesController,
                       decoration: InputDecoration(
                         labelText: localizations.notesOptionnel,
-                        prefixIcon: Icon(Icons.note, color: Theme.of(context).colorScheme.secondary),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: Icon(Icons.note,
+                            color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 2),
                         ),
                       ),
                       maxLines: 3,

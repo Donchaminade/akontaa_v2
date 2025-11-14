@@ -37,7 +37,8 @@ final lightTheme = ThemeData(
     foregroundColor: Colors.white,
   ),
   textTheme: const TextTheme(
-    headlineSmall: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+    headlineSmall:
+        TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
     titleLarge: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
     bodyMedium: TextStyle(color: Colors.black54),
   ),

@@ -33,7 +33,8 @@ class OwedToMePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (ctx) => const AddEditDebtPage(isOwedToMe: true)),
+            MaterialPageRoute(
+                builder: (ctx) => const AddEditDebtPage(isOwedToMe: true)),
           );
         },
         child: const Icon(Icons.add),

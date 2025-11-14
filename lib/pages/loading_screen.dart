@@ -1,3 +1,4 @@
+import 'package:akontaa/providers/event_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:akontaa/pages/home_page.dart';
 import 'package:shimmer/shimmer.dart';
@@ -21,14 +22,23 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   _navigateToHome() async {
-    // Load debts before navigating to home page
-    await Provider.of<DebtProvider>(context, listen: false).loadDebts();
-    await Future.delayed(const Duration(seconds: 5)); // 5-second simulation
+    try {
+      // Load debts and events before navigating to home page
+      await Provider.of<DebtProvider>(context, listen: false).loadDebts();
+      await Provider.of<EventProvider>(context, listen: false).loadEvents();
+    } catch (e) {
+      print("Erreur lors du chargement des données: $e");
+      // En cas d'erreur, on continue quand même pour ne pas bloquer l'utilisateur
+    }
+
+    await Future.delayed(const Duration(seconds: 3));
+    
     if (mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(showOnboarding: false, changeTheme: widget.changeTheme),
+          builder: (context) =>
+              HomePage(showOnboarding: false, changeTheme: widget.changeTheme),
         ),
       );
     }
@@ -39,7 +49,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[900], // Dark background
       appBar: AppBar(
-        title: const Text('Chargement...', style: TextStyle(color: Colors.white)),
+        title:
+            const Text('Chargement...', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.grey[900],
         elevation: 0,
       ),
@@ -67,19 +78,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
         items: [
           BottomNavigationBarItem(
             icon: _buildShimmerItem(height: 24, width: 24), // Icon placeholder
-            label: ' ', // Label placeholder
+            label: '  ', // Label placeholder
           ),
           BottomNavigationBarItem(
             icon: _buildShimmerItem(height: 24, width: 24), // Icon placeholder
-            label: ' ', // Label placeholder
+            label: '  ', // Label placeholder
           ),
           BottomNavigationBarItem(
             icon: _buildShimmerItem(height: 24, width: 24), // Icon placeholder
-            label: ' ', // Label placeholder
+            label: '  ', // Label placeholder
           ),
           BottomNavigationBarItem(
             icon: _buildShimmerItem(height: 24, width: 24), // Icon placeholder
-            label: ' ', // Label placeholder
+            label: '  ', // Label placeholder
           ),
         ],
         currentIndex: 0,
@@ -90,7 +101,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     );
   }
 
-  Widget _buildShimmerItem({double height = 16, double? width, double borderRadius = 4}) {
+  Widget _buildShimmerItem(
+      {double height = 16, double? width, double borderRadius = 4}) {
     return Shimmer.fromColors(
       baseColor: Colors.grey[700]!,
       highlightColor: Colors.grey[600]!,

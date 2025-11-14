@@ -6,7 +6,6 @@ import 'package:akontaa/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class SettingsPage extends StatefulWidget {
   final Function(ThemeMode) changeTheme;
   const SettingsPage({super.key, required this.changeTheme});
@@ -75,9 +74,11 @@ class _SettingsPageState extends State<SettingsPage> {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
+            backgroundColor:
+                Theme.of(context).colorScheme.surface.withOpacity(0.7),
             title: Text(localizations.reinitialiserLesDonnees),
-            content: Text(localizations.etesVousSurDeVouloirSupprimerLesDonnees),
+            content:
+                Text(localizations.etesVousSurDeVouloirSupprimerLesDonnees),
             actions: <Widget>[
               TextButton(
                 child: Text(localizations.annuler),
@@ -88,7 +89,8 @@ class _SettingsPageState extends State<SettingsPage> {
               TextButton(
                 child: Text(localizations.mesDettesSeulement),
                 onPressed: () {
-                  final debtProvider = Provider.of<DebtProvider>(context, listen: false);
+                  final debtProvider =
+                      Provider.of<DebtProvider>(context, listen: false);
                   debtProvider.clearMyDebts();
                   Navigator.of(context).pop();
                 },
@@ -96,7 +98,8 @@ class _SettingsPageState extends State<SettingsPage> {
               TextButton(
                 child: Text(localizations.onMeDoitSeulement),
                 onPressed: () {
-                  final debtProvider = Provider.of<DebtProvider>(context, listen: false);
+                  final debtProvider =
+                      Provider.of<DebtProvider>(context, listen: false);
                   debtProvider.clearOwedToMeDebts();
                   Navigator.of(context).pop();
                 },
@@ -104,7 +107,8 @@ class _SettingsPageState extends State<SettingsPage> {
               TextButton(
                 child: Text(localizations.toutSupprimer),
                 onPressed: () {
-                  final debtProvider = Provider.of<DebtProvider>(context, listen: false);
+                  final debtProvider =
+                      Provider.of<DebtProvider>(context, listen: false);
                   debtProvider.clearAllDebts();
                   Navigator.of(context).pop();
                 },
@@ -132,7 +136,8 @@ class _SettingsPageState extends State<SettingsPage> {
           Card(
             elevation: 4,
             margin: const EdgeInsets.symmetric(vertical: 8.0),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: SwitchListTile(
               title: Text(localizations.activerLesNotifications),
               secondary: const Icon(Icons.notifications),
@@ -144,12 +149,15 @@ class _SettingsPageState extends State<SettingsPage> {
           Card(
             elevation: 4,
             margin: const EdgeInsets.symmetric(vertical: 8.0),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: ListTile(
               leading: const Icon(Icons.brightness_6),
               title: Text(localizations.theme),
               trailing: DropdownButton<ThemeMode>(
-                value: Theme.of(context).brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light,
+                value: Theme.of(context).brightness == Brightness.dark
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
                 onChanged: (ThemeMode? newMode) {
                   if (newMode != null) {
                     widget.changeTheme(newMode);
@@ -171,15 +179,19 @@ class _SettingsPageState extends State<SettingsPage> {
           Card(
             elevation: 4,
             margin: const EdgeInsets.symmetric(vertical: 8.0),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: ListTile(
               leading: const Icon(Icons.language),
               title: Text(localizations.langue),
               trailing: DropdownButton<String>(
-                value: Provider.of<LocaleProvider>(context).locale?.languageCode ?? 'fr',
+                value:
+                    Provider.of<LocaleProvider>(context).locale?.languageCode ??
+                        'fr',
                 onChanged: (String? newLocale) {
                   if (newLocale != null) {
-                    Provider.of<LocaleProvider>(context, listen: false).setLocale(Locale(newLocale));
+                    Provider.of<LocaleProvider>(context, listen: false)
+                        .setLocale(Locale(newLocale));
                   }
                 },
                 items: const <DropdownMenuItem<String>>[
@@ -198,7 +210,8 @@ class _SettingsPageState extends State<SettingsPage> {
           Card(
             elevation: 4,
             margin: const EdgeInsets.symmetric(vertical: 8.0),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: ListTile(
               leading: const Icon(Icons.restore),
               title: Text(localizations.reinitialiserLApplication),

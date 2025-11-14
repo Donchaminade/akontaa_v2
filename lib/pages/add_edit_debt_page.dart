@@ -108,7 +108,9 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(widget.debt == null ? localizations.ajouterUneDette : localizations.modifierLaDette),
+        title: Text(widget.debt == null
+            ? localizations.ajouterUneDette
+            : localizations.modifierLaDette),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -123,18 +125,23 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   elevation: 8,
                   shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
                       initialValue: _personName,
                       decoration: InputDecoration(
                         labelText: localizations.nomDeLaPersonne,
-                        prefixIcon: Icon(Icons.person, color: Theme.of(context).colorScheme.secondary),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: Icon(Icons.person,
+                            color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 2),
                         ),
                       ),
                       validator: (value) {
@@ -151,18 +158,24 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   elevation: 8,
                   shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
-                      initialValue: _totalAmount != 0 ? _totalAmount.toString() : '',
+                      initialValue:
+                          _totalAmount != 0 ? _totalAmount.toString() : '',
                       decoration: InputDecoration(
                         labelText: localizations.montantTotal,
-                        prefixIcon: Icon(Icons.attach_money, color: Theme.of(context).colorScheme.secondary),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: Icon(Icons.attach_money,
+                            color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 2),
                         ),
                       ),
                       keyboardType: TextInputType.number,
@@ -182,18 +195,23 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   elevation: 8,
                   shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
                       initialValue: _description,
                       decoration: InputDecoration(
                         labelText: localizations.description,
-                        prefixIcon: Icon(Icons.description, color: Theme.of(context).colorScheme.secondary),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: Icon(Icons.description,
+                            color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 2),
                         ),
                       ),
                       maxLines: 3,
@@ -205,18 +223,23 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   elevation: 8,
                   shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
                       controller: _dueDateController,
                       decoration: InputDecoration(
                         labelText: localizations.dateEcheance,
-                        prefixIcon: Icon(Icons.calendar_today, color: Theme.of(context).colorScheme.secondary),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: Icon(Icons.calendar_today,
+                            color: Theme.of(context).colorScheme.secondary),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.secondary,
+                              width: 2),
                         ),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.edit_calendar),
@@ -231,9 +254,11 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   elevation: 8,
                   shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                     child: SwitchListTile(
                       title: Text(localizations.onMeDoitCetArgent),
                       value: _isOwedToMe,
