@@ -18,7 +18,7 @@ class EventsListPage extends StatelessWidget {
         ? Center(
             child: Text(
               localizations.aucunEvenementPourLeMoment,
-              style: const TextStyle(fontSize: 18, color: Colors.white),
+              style: const TextStyle(fontSize: 18),
               textAlign: TextAlign.center,
             ),
           )
