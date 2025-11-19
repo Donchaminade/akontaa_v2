@@ -75,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: AlertDialog(
             backgroundColor:
-                Theme.of(context).colorScheme.surface.withOpacity(0.7),
+                Theme.of(context).colorScheme.surface.withOpacity(0.8),
             title: Text(localizations.reinitialiserLesDonnees),
             content:
                 Text(localizations.etesVousSurDeVouloirSupprimerLesDonnees),
