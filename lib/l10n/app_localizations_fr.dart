@@ -341,4 +341,33 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get articles => 'Articles';
+
+  @override
+  String get methodeDePaiement => 'Méthode de Paiement';
+
+  @override
+  String get especes => 'Espèces';
+
+  @override
+  String get virementBancaire => 'Virement Bancaire';
+
+  @override
+  String get paiementMobile => 'Paiement Mobile';
+
+  @override
+  String get cheque => 'Chèque';
+
+  @override
+  String get referenceDeTransactionOptionnel =>
+      'Référence de Transaction (Optionnel)';
+
+  @override
+  String get dateDePaiement => 'Date de Paiement';
+
+  @override
+  String get preuvePhoto => 'Preuve (Photo)';
+
+  @override
+  String get veuillezSelectionnerMethodePaiement =>
+      'Veuillez sélectionner une méthode de paiement.';
 }

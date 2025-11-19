@@ -154,7 +154,7 @@ class DebtProvider with ChangeNotifier {
         dueDate: DateTime.now().add(const Duration(days: 10)),
         isOwedToMe: true,
         repayments: [
-          Repayment(id: uuid.v4(), amount: 50.0, date: DateTime.now()),
+          Repayment(id: uuid.v4(), amount: 50.0, date: DateTime.now(), paymentMethod: ''),
         ],
       ),
       Debt(

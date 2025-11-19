@@ -126,5 +126,14 @@
   "cout": "Cost",
   "veuillezEntrerUnCoutValide": "Please enter a valid cost.",
   "aucunArticleDansCetEvenement": "No items in this event.",
-  "articles": "Articles"
+  "articles": "Articles",
+  "methodeDePaiement": "Payment Method",
+  "especes": "Cash",
+  "virementBancaire": "Bank Transfer",
+  "paiementMobile": "Mobile Payment",
+  "cheque": "Cheque",
+  "referenceDeTransactionOptionnel": "Transaction Reference (Optional)",
+  "dateDePaiement": "Payment Date",
+  "preuvePhoto": "Proof (Photo)",
+  "veuillezSelectionnerMethodePaiement": "Please select a payment method."
 }

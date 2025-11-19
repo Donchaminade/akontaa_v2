@@ -715,6 +715,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Articles'**
   String get articles;
+
+  /// No description provided for @methodeDePaiement.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get methodeDePaiement;
+
+  /// No description provided for @especes.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get especes;
+
+  /// No description provided for @virementBancaire.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Transfer'**
+  String get virementBancaire;
+
+  /// No description provided for @paiementMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Payment'**
+  String get paiementMobile;
+
+  /// No description provided for @cheque.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque'**
+  String get cheque;
+
+  /// No description provided for @referenceDeTransactionOptionnel.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Reference (Optional)'**
+  String get referenceDeTransactionOptionnel;
+
+  /// No description provided for @dateDePaiement.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Date'**
+  String get dateDePaiement;
+
+  /// No description provided for @preuvePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Proof (Photo)'**
+  String get preuvePhoto;
+
+  /// No description provided for @veuillezSelectionnerMethodePaiement.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a payment method.'**
+  String get veuillezSelectionnerMethodePaiement;
 }
 
 class _AppLocalizationsDelegate

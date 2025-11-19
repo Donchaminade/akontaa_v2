@@ -332,4 +332,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get articles => 'Articles';
+
+  @override
+  String get methodeDePaiement => 'Payment Method';
+
+  @override
+  String get especes => 'Cash';
+
+  @override
+  String get virementBancaire => 'Bank Transfer';
+
+  @override
+  String get paiementMobile => 'Mobile Payment';
+
+  @override
+  String get cheque => 'Cheque';
+
+  @override
+  String get referenceDeTransactionOptionnel =>
+      'Transaction Reference (Optional)';
+
+  @override
+  String get dateDePaiement => 'Payment Date';
+
+  @override
+  String get preuvePhoto => 'Proof (Photo)';
+
+  @override
+  String get veuillezSelectionnerMethodePaiement =>
+      'Please select a payment method.';
 }

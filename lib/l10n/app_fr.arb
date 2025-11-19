@@ -126,5 +126,14 @@
   "cout": "Coût",
   "veuillezEntrerUnCoutValide": "Veuillez entrer un coût valide.",
   "aucunArticleDansCetEvenement": "Aucun article dans cet événement.",
-  "articles": "Articles"
+  "articles": "Articles",
+  "methodeDePaiement": "Méthode de Paiement",
+  "especes": "Espèces",
+  "virementBancaire": "Virement Bancaire",
+  "paiementMobile": "Paiement Mobile",
+  "cheque": "Chèque",
+  "referenceDeTransactionOptionnel": "Référence de Transaction (Optionnel)",
+  "dateDePaiement": "Date de Paiement",
+  "preuvePhoto": "Preuve (Photo)",
+  "veuillezSelectionnerMethodePaiement": "Veuillez sélectionner une méthode de paiement."
 }

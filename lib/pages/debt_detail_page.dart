@@ -1,96 +1,20 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:akontaa/app_colors.dart';
 import 'package:akontaa/l10n/app_localizations.dart';
+import 'package:akontaa/pages/add_repayment_form_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 import '../models/debt.dart';
 import '../models/repayment.dart';
 import '../providers/debt_provider.dart';
 import 'add_edit_debt_page.dart';
-// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DebtDetailPage extends StatelessWidget {
   final String debtId;
 
   const DebtDetailPage({super.key, required this.debtId});
-
-  void _showAddRepaymentDialog(BuildContext context, Debt debt) {
-    final amountController = TextEditingController();
-    final notesController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
-    final localizations = AppLocalizations.of(context)!;
-
-    showDialog(
-      context: context,
-      builder: (ctx) => BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-        child: AlertDialog(
-          backgroundColor:
-              Theme.of(context).colorScheme.surface.withOpacity(0.7),
-          title: Text(localizations.ajouterUnRemboursement),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: amountController,
-                  decoration: InputDecoration(labelText: localizations.montant),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null ||
-                        double.tryParse(value) == null ||
-                        double.parse(value) <= 0) {
-                      return localizations.montantInvalide;
-                    }
-                    if (double.parse(value) > debt.remainingAmount) {
-                      return localizations
-                          .leMontantNePeutPasDepasserLeSoldeRestantSimple;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: notesController,
-                  decoration:
-                      InputDecoration(labelText: localizations.notesOptionnel),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: Text(localizations.annuler),
-              onPressed: () => Navigator.of(ctx).pop(),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.green,
-                foregroundColor: Colors.white,
-              ),
-              child: Text(localizations.ajouter),
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  final newRepayment = Repayment(
-                    id: const Uuid().v4(),
-                    amount: double.parse(amountController.text),
-                    date: DateTime.now(),
-                    notes: notesController.text,
-                  );
-                  Provider.of<DebtProvider>(context, listen: false)
-                      .addRepayment(debt.id, newRepayment);
-                  Navigator.of(ctx).pop();
-                }
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,8 +100,13 @@ class DebtDetailPage extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 80.0),
         child: FloatingActionButton(
-          onPressed:
-              debt.isPaid ? null : () => _showAddRepaymentDialog(context, debt),
+          onPressed: debt.isPaid
+              ? null
+              : () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) => AddRepaymentFormPage(debt: debt),
+                  ));
+                },
           backgroundColor: debt.isPaid
               ? Colors.grey
               : Theme.of(context).colorScheme.secondary,
@@ -277,30 +206,29 @@ class DebtDetailPage extends StatelessWidget {
         final repayment = debt.repayments[index];
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-          child: ListTile(
+          child: ExpansionTile(
             leading: const Icon(Icons.payment),
             title: Text(currencyFormat.format(repayment.amount)),
-            subtitle: Text(DateFormat('dd/MM/yyyy').format(repayment.date)),
-            trailing: repayment.notes != null && repayment.notes!.isNotEmpty
-                ? IconButton(
-                    icon: const Icon(Icons.comment),
-                    onPressed: () {
-                      showDialog(
-                        context: ctx,
-                        builder: (dCtx) => AlertDialog(
-                          title: Text(localizations.notes),
-                          content: Text(repayment.notes!),
-                          actions: [
-                            TextButton(
-                              child: Text(localizations.fermer),
-                              onPressed: () => Navigator.of(dCtx).pop(),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  )
-                : null,
+            subtitle: Text(DateFormat.yMd().add_jm().format(repayment.date)),
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoRow(context, localizations.methodeDePaiement, repayment.paymentMethod),
+                    if (repayment.notes != null && repayment.notes!.isNotEmpty)
+                      _buildInfoRow(context, localizations.notes, repayment.notes!),
+                    if (repayment.proofImagePath != null && repayment.proofImagePath!.isNotEmpty) ...[
+                      const SizedBox(height: 10),
+                       Text(localizations.preuvePhoto, style: Theme.of(context).textTheme.bodyLarge),
+                      const SizedBox(height: 8),
+                      Image.file(File(repayment.proofImagePath!)),
+                    ]
+                  ],
+                ),
+              )
+            ],
           ),
         );
       },

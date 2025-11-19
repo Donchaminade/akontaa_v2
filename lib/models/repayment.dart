@@ -3,12 +3,16 @@ class Repayment {
   final double amount;
   final DateTime date;
   final String? notes; // Notes ou description du paiement
+  final String paymentMethod;
+  final String? proofImagePath;
 
   Repayment({
     required this.id,
     required this.amount,
     required this.date,
     this.notes,
+    required this.paymentMethod,
+    this.proofImagePath,
   });
 
   // Méthodes de sérialisation/désérialisation JSON
@@ -18,6 +22,8 @@ class Repayment {
       amount: json['amount'],
       date: DateTime.parse(json['date']),
       notes: json['notes'],
+      paymentMethod: json['paymentMethod'],
+      proofImagePath: json['proofImagePath'],
     );
   }
 
@@ -27,6 +33,8 @@ class Repayment {
       'amount': amount,
       'date': date.toIso8601String(),
       'notes': notes,
+      'paymentMethod': paymentMethod,
+      'proofImagePath': proofImagePath,
     };
   }
 }
