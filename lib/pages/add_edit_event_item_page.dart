@@ -65,43 +65,96 @@ class _AddEditEventItemPageState extends State<AddEditEventItemPage> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextFormField(
-                initialValue: _itemName,
-                decoration: InputDecoration(
-                  labelText: localizations.nomDeLArticle,
+              _CustomCard(
+                child: TextFormField(
+                  initialValue: _itemName,
+                  decoration: _buildInputDecoration(
+                      localizations.nomDeLArticle, Icons.shopping_cart, context),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localizations.veuillezEntrerUnNom;
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _itemName = value!,
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return localizations.veuillezEntrerUnNom;
-                  }
-                  return null;
-                },
-                onSaved: (value) => _itemName = value!,
               ),
-              TextFormField(
-                initialValue: _itemCost != 0 ? _itemCost.toString() : '',
-                decoration: InputDecoration(
-                  labelText: localizations.cout,
+              const SizedBox(height: 16),
+              _CustomCard(
+                child: TextFormField(
+                  initialValue: _itemCost != 0 ? _itemCost.toString() : '',
+                  decoration: _buildInputDecoration(
+                      localizations.cout, Icons.attach_money, context),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null ||
+                        double.tryParse(value) == null ||
+                        double.parse(value) <= 0) {
+                      return localizations.veuillezEntrerUnCoutValide;
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _itemCost = double.parse(value!),
                 ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null ||
-                      double.tryParse(value) == null ||
-                      double.parse(value) <= 0) {
-                    return localizations.veuillezEntrerUnCoutValide;
-                  }
-                  return null;
-                },
-                onSaved: (value) => _itemCost = double.parse(value!),
               ),
+              const Spacer(),
+              ElevatedButton(
+                onPressed: _saveForm,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                child: Text(
+                  localizations.ajouter,
+                  style: const TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
+              const SizedBox(height: 80),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _saveForm,
-        child: const Icon(Icons.save),
+    );
+  }
+
+  InputDecoration _buildInputDecoration(
+      String label, IconData icon, BuildContext context) {
+    return InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.secondary),
+      filled: true,
+      fillColor: Colors.grey.withOpacity(0.1),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide:
+            BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+      ),
+    );
+  }
+}
+
+class _CustomCard extends StatelessWidget {
+  final Widget child;
+  const _CustomCard({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shadowColor: Colors.black.withOpacity(0.2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: child,
       ),
     );
   }

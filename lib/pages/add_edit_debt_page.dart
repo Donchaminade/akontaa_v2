@@ -5,7 +5,6 @@ import 'package:uuid/uuid.dart';
 import '../models/debt.dart';
 import '../providers/debt_provider.dart';
 import 'package:intl/intl.dart';
-// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddEditDebtPage extends StatefulWidget {
   final Debt? debt;
@@ -42,7 +41,7 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
       _totalAmount = 0.0;
       _description = '';
       _dueDate = DateTime.now();
-      _isOwedToMe = widget.isOwedToMe; // Use the passed parameter
+      _isOwedToMe = widget.isOwedToMe;
     }
     _dueDateController.text = DateFormat('dd/MM/yyyy').format(_dueDate);
   }
@@ -120,155 +119,93 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  elevation: 8,
-                  shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      initialValue: _personName,
-                      decoration: InputDecoration(
-                        labelText: localizations.nomDeLaPersonne,
-                        prefixIcon: Icon(Icons.person,
-                            color: Theme.of(context).colorScheme.secondary),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary,
-                              width: 2),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return localizations.veuillezEntrerUnNom;
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => _personName = value!,
-                    ),
+                _CustomCard(
+                  child: TextFormField(
+                    initialValue: _personName,
+                    decoration: _buildInputDecoration(
+                        localizations.nomDeLaPersonne, Icons.person, context),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return localizations.veuillezEntrerUnNom;
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => _personName = value!,
                   ),
                 ),
-                Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  elevation: 8,
-                  shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      initialValue:
-                          _totalAmount != 0 ? _totalAmount.toString() : '',
-                      decoration: InputDecoration(
-                        labelText: localizations.montantTotal,
-                        prefixIcon: Icon(Icons.attach_money,
-                            color: Theme.of(context).colorScheme.secondary),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary,
-                              width: 2),
-                        ),
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null ||
-                            double.tryParse(value) == null ||
-                            double.parse(value) <= 0) {
-                          return localizations.veuillezEntrerUnMontantValide;
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => _totalAmount = double.parse(value!),
-                    ),
+                const SizedBox(height: 16),
+                _CustomCard(
+                  child: TextFormField(
+                    initialValue:
+                        _totalAmount != 0 ? _totalAmount.toString() : '',
+                    decoration: _buildInputDecoration(
+                        localizations.montantTotal, Icons.attach_money, context),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null ||
+                          double.tryParse(value) == null ||
+                          double.parse(value) <= 0) {
+                        return localizations.veuillezEntrerUnMontantValide;
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => _totalAmount = double.parse(value!),
                   ),
                 ),
-                Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  elevation: 8,
-                  shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      initialValue: _description,
-                      decoration: InputDecoration(
-                        labelText: localizations.description,
-                        prefixIcon: Icon(Icons.description,
-                            color: Theme.of(context).colorScheme.secondary),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary,
-                              width: 2),
-                        ),
-                      ),
-                      maxLines: 3,
-                      onSaved: (value) => _description = value ?? '',
-                    ),
+                const SizedBox(height: 16),
+                _CustomCard(
+                  child: TextFormField(
+                    initialValue: _description,
+                    decoration: _buildInputDecoration(
+                        localizations.description, Icons.description, context),
+                    maxLines: 3,
+                    onSaved: (value) => _description = value ?? '',
                   ),
                 ),
-                Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  elevation: 8,
-                  shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: _dueDateController,
-                      decoration: InputDecoration(
-                        labelText: localizations.dateEcheance,
-                        prefixIcon: Icon(Icons.calendar_today,
-                            color: Theme.of(context).colorScheme.secondary),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary,
-                              width: 2),
-                        ),
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.edit_calendar),
-                          onPressed: () => _selectDueDate(context),
-                        ),
+                const SizedBox(height: 16),
+                _CustomCard(
+                  child: TextFormField(
+                    controller: _dueDateController,
+                    decoration: _buildInputDecoration(
+                        localizations.dateEcheance, Icons.calendar_today, context)
+                        .copyWith(
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.edit_calendar, color: Theme.of(context).colorScheme.secondary),
+                        onPressed: () => _selectDueDate(context),
                       ),
-                      readOnly: true,
                     ),
+                    readOnly: true,
                   ),
                 ),
-                Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  elevation: 8,
-                  shadowColor: Colors.black.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                    child: SwitchListTile(
-                      title: Text(localizations.onMeDoitCetArgent),
-                      value: _isOwedToMe,
-                      onChanged: (bool value) {
-                        setState(() {
-                          _isOwedToMe = value;
-                        });
-                      },
-                      activeColor: Theme.of(context).colorScheme.secondary,
+                const SizedBox(height: 16),
+                _CustomCard(
+                  child: SwitchListTile(
+                    title: Text(localizations.onMeDoitCetArgent, style: const TextStyle(fontSize: 16)),
+                    value: _isOwedToMe,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isOwedToMe = value;
+                      });
+                    },
+                    activeColor: Theme.of(context).colorScheme.secondary,
+                    secondary: Icon(Icons.swap_horiz, color: Theme.of(context).colorScheme.secondary),
+                  ),
+                ),
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: _saveForm,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
+                  ),
+                  child: Text(
+                    localizations.ajouter,
+                    style: const TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
               ],
@@ -276,12 +213,42 @@ class AddEditDebtPageState extends State<AddEditDebtPage> {
           ),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 80.0),
-        child: FloatingActionButton(
-          onPressed: _saveForm,
-          child: const Icon(Icons.save),
-        ),
+    );
+  }
+
+  InputDecoration _buildInputDecoration(
+      String label, IconData icon, BuildContext context) {
+    return InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.secondary),
+      filled: true,
+      fillColor: Colors.grey.withOpacity(0.1),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide:
+            BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2),
+      ),
+    );
+  }
+}
+
+class _CustomCard extends StatelessWidget {
+  final Widget child;
+  const _CustomCard({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shadowColor: Colors.black.withOpacity(0.2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: child,
       ),
     );
   }
