@@ -14,55 +14,37 @@ class EventsListPage extends StatelessWidget {
     final eventProvider = Provider.of<EventProvider>(context);
     final events = eventProvider.events;
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        title: Text(localizations.evenements),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: events.isEmpty
-          ? Center(
-              child: Text(
-                localizations.aucunEvenementPourLeMoment,
-                style: const TextStyle(fontSize: 18, color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-            )
-          : ListView.builder(
-              itemCount: events.length,
-              itemBuilder: (context, index) {
-                final event = events[index];
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 16.0),
-                  child: ListTile(
-                    title: Text(event.name),
-                    subtitle: Text(
-                        "${localizations.coutTotal}: ${event.totalCost.toStringAsFixed(2)} Fcfa"),
-                    trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              EventDetailPage(eventId: event.id),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
+    return events.isEmpty
+        ? Center(
+            child: Text(
+              localizations.aucunEvenementPourLeMoment,
+              style: const TextStyle(fontSize: 18, color: Colors.white),
+              textAlign: TextAlign.center,
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const AddEditEventPage(),
-            ),
+          )
+        : ListView.builder(
+            itemCount: events.length,
+            itemBuilder: (context, index) {
+              final event = events[index];
+              return Card(
+                margin:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: ListTile(
+                  title: Text(event.name),
+                  subtitle: Text(
+                      "${localizations.coutTotal}: ${event.totalCost.toStringAsFixed(2)} Fcfa"),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EventDetailPage(eventId: event.id),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
           );
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
   }
 }

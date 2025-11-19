@@ -15,30 +15,18 @@ class OwedToMePage extends StatelessWidget {
     final owedToMeDebts = debtProvider.owedToMeDebts;
     final localizations = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: owedToMeDebts.isEmpty
-          ? Center(
-              child: Text(
-                localizations.personneNeVousDoitDArgent,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
-              ),
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.all(8.0),
-              itemCount: owedToMeDebts.length,
-              itemBuilder: (ctx, i) => DebtCard(debt: owedToMeDebts[i]),
+    return owedToMeDebts.isEmpty
+        ? Center(
+            child: Text(
+              localizations.personneNeVousDoitDArgent,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18),
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (ctx) => const AddEditDebtPage(isOwedToMe: true)),
+          )
+        : ListView.builder(
+            padding: const EdgeInsets.all(8.0),
+            itemCount: owedToMeDebts.length,
+            itemBuilder: (ctx, i) => DebtCard(debt: owedToMeDebts[i]),
           );
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
   }
 }

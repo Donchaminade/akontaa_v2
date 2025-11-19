@@ -7,6 +7,8 @@ import 'package:akontaa/pages/my_debts_page.dart';
 import 'package:akontaa/pages/owed_to_me_page.dart';
 import 'package:akontaa/pages/transaction_history_page.dart';
 import 'package:akontaa/pages/settings_page.dart';
+import 'package:akontaa/pages/add_edit_debt_page.dart';
+import 'package:akontaa/pages/add_edit_event_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -304,6 +306,32 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(_pageTitles[_selectedIndex], key: _appBarTitleKey),
         actions: [
+          if (_selectedIndex == 1 || _selectedIndex == 2 || _selectedIndex == 4)
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.green,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.add, color: Colors.white),
+                  onPressed: () {
+                    if (_selectedIndex == 1) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => const AddEditDebtPage()));
+                    } else if (_selectedIndex == 2) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) =>
+                              const AddEditDebtPage(isOwedToMe: true)));
+                    } else if (_selectedIndex == 4) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => const AddEditEventPage()));
+                    }
+                  },
+                ),
+              ),
+            ),
           IconButton(
             key: _settingsButtonKey,
             icon: const Icon(Icons.settings),

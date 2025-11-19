@@ -15,30 +15,19 @@ class MyDebtsPage extends StatelessWidget {
     final myDebts = debtProvider.myDebts;
     final localizations = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: myDebts.isEmpty
-          ? Center(
-              child: Text(
-                localizations.vousNavezAucuneDettePourLeMoment,
-                style: const TextStyle(fontSize: 18, color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-            )
-          : ListView.builder(
-              itemCount: myDebts.length,
-              itemBuilder: (context, index) {
-                return DebtCard(debt: myDebts[index]);
-              },
+    return myDebts.isEmpty
+        ? Center(
+            child: Text(
+              localizations.vousNavezAucuneDettePourLeMoment,
+              style: const TextStyle(fontSize: 18, color: Colors.white),
+              textAlign: TextAlign.center,
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (ctx) => const AddEditDebtPage()),
+          )
+        : ListView.builder(
+            itemCount: myDebts.length,
+            itemBuilder: (context, index) {
+              return DebtCard(debt: myDebts[index]);
+            },
           );
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
   }
 }
